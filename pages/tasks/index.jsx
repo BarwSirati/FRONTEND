@@ -47,6 +47,7 @@ const Tasks = ({ token, user }) => {
     setName(e.target.value);
     setSearch(true);
   };
+
   const filterUnit = async (e) => {
     e.preventDefault();
     setUnit(e.target.value);
@@ -59,49 +60,42 @@ const Tasks = ({ token, user }) => {
   };
 
   if (search) {
-    let paramsData = {};
     if (name) {
-      const data = questions.filter((question) =>
-        question.title.toLowerCase().includes(name.toLowerCase())
+      setQuestions(
+        data.filter((ques) =>
+          ques.title.toLowerCase().includes(name.toLowerCase())
+        )
       );
-      setQuestions(data);
-    } else if (unit && complete) {
-      paramsData = {
-        unit: unit,
-        complete: complete,
+    } else {
+      let paramsData = {};
+      if (unit != "" && complete != "") {
+        paramsData = {
+          unit: unit,
+          complete: complete,
+        };
+      } else if (unit != "") {
+        paramsData = {
+          unit: unit,
+        };
+      } else if (complete != "") {
+        paramsData = {
+          complete: complete,
+        };
+      }
+      const query = async () => {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND}/question/search`,
+          {
+            params: paramsData,
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        setQuestions(res.data);
       };
-    } else if (unit) {
-      paramsData = {
-        unit: unit,
-      };
-    } else if (complete) {
-      paramsData = {
-        complete: complete,
-      };
-    } else if (name) {
-      const data = questions.filter((question) =>
-        question.title.toLowerCase().includes(name)
-      );
-      setQuestions(data);
-    } else if (unit == "" || complete == "") {
-      paramsData = {
-        unit: "",
-        complete: "",
-      };
+      query();
     }
-    const query = async () => {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND}/question/search`,
-        {
-          params: paramsData,
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      setQuestions(res.data);
-    };
-    query();
     setSearch(false);
   }
   const renderStar = (rank) => {
