@@ -4,5 +4,9 @@ services:
   app:
     image: docker-nextjs
     build: ./
-    ports:
-      - 3000:3000
+    networks:
+      - nginx
+networks:
+  nginx:
+    name: nginx_bridge
+    driver: bridge
