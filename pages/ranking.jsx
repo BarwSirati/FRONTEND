@@ -3,7 +3,6 @@ import Layout from "../components/Layout";
 import { getCookie } from "cookies-next";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../hooks/api/auth/authSlice";
-import Loading from "../components/Loading";
 import Table from "../components/Ranking/Table";
 import jwtDecode from "jwt-decode";
 
