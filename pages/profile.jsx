@@ -20,15 +20,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useUpdateProfileMutation } from "../hooks/api/user/userSlice";
 import Loading from "../components/Loading";
+import { useRouter } from "next/dist/client/router";
 
 const schema = yup.object({
-  id: yup.string().required(),
   username: yup.string(),
   name: yup.string(),
   password: yup.string(),
 });
 
 const Profile = ({ token }) => {
+  const router = useRouter();
   const [updateProfile] = useUpdateProfileMutation();
   const { data, isSuccess, refetch, isFetching, isError } =
     useGetCurrentQuery(token);
@@ -46,13 +47,17 @@ const Profile = ({ token }) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = async (data = {}) => {
-    for (const key in data) {
-      if (data[key] === "") {
-        delete data[key];
+  const onSubmit = async (payload = {}) => {
+    for (const key in payload) {
+      if (payload[key] === "") {
+        delete payload[key];
       }
     }
-    const query = await updateProfile({ token: token, data: data });
+    const query = await updateProfile({
+      token: token,
+      data: payload,
+      id: data.id,
+    });
     if (query.data !== "") {
       refetch();
     }
@@ -152,12 +157,6 @@ const Profile = ({ token }) => {
                 <FontAwesomeIcon icon={faUser} /> &nbsp; Your Profile
               </h3>
               <div className="mt-5 space-y-5">
-                <input
-                  type="hidden"
-                  name="id"
-                  value={data.id}
-                  {...register("id")}
-                />
                 <input
                   type="text"
                   placeholder="Change Username"
