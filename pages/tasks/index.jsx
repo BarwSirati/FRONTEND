@@ -131,7 +131,7 @@ const Tasks = ({ token, user }) => {
       return star;
     }
   };
-
+  console.log(questions);
   return isSuccess ? (
     <Layout>
       <div className="md:space-x-4 bg-primary md:space-y-0 space-y-3 rounded-lg p-2 text-white md:flex">
@@ -174,7 +174,7 @@ const Tasks = ({ token, user }) => {
           </select>
         </div>
       </div>
-      <div className="card w-full bg-base-200 shadow-xl my-6 rounded-md text-white">
+      <div className="card w-full bg-[#1D222A] shadow-xl mt-6 mb-2 rounded-md text-white">
         <div className="rounded-t-md bg-primary p-1 text-center text-2xl font-bold">
           Mission
         </div>
@@ -182,7 +182,15 @@ const Tasks = ({ token, user }) => {
           {displayQuestion.map((ques, key) => {
             return (
               <Link key={key} href={`/tasks/${ques._id}`}>
-                <div className="card w-full bg-base-100 shadow-xl cursor-pointer hover:scale-105 hover:border-2 hover:border-warning">
+                <div
+                  className={`card w-full ${
+                    ques.result != "" && !ques.status
+                      ? "bg-red-600"
+                      : ques.status
+                      ? "bg-lime-600"
+                      : "bg-[#2A303C]"
+                  }  shadow-xl cursor-pointer hover:scale-105  transition-all`}
+                >
                   <div className="card-body text-center">
                     <h2 className="">{ques.title}</h2>
                     <p>{ques.unit}</p>
@@ -195,27 +203,27 @@ const Tasks = ({ token, user }) => {
             );
           })}
         </div>
+        {isSuccess && (
+          <div className="text-2xl pb-4">
+            <ReactPaginate
+              className="flex space-x-10 justify-center"
+              pageClassName="hover:text-success text-white"
+              breakLabel="..."
+              previousLabel={<FontAwesomeIcon icon={faCaretLeft} />}
+              nextLabel={<FontAwesomeIcon icon={faCaretRight} />}
+              pageCount={Math.ceil(questions.length / questionsPerPage)}
+              onPageChange={({ selected }) => {
+                setPageNumber(selected);
+              }}
+              activeClassName={"text-success"}
+              pageRangeDisplayed={2}
+              renderOnZeroPageCount={null}
+              nextClassName={"hover:text-success text-white"}
+              previousClassName={"hover:text-success text-white"}
+            />
+          </div>
+        )}
       </div>
-      {isSuccess && (
-        <div className="text-2xl">
-          <ReactPaginate
-            className="flex space-x-10 justify-center"
-            pageClassName="hover:text-success"
-            breakLabel="..."
-            previousLabel={<FontAwesomeIcon icon={faCaretLeft} />}
-            nextLabel={<FontAwesomeIcon icon={faCaretRight} />}
-            pageCount={Math.ceil(questions.length / questionsPerPage)}
-            onPageChange={({ selected }) => {
-              setPageNumber(selected);
-            }}
-            activeClassName={"text-success"}
-            pageRangeDisplayed={2}
-            renderOnZeroPageCount={null}
-            nextClassName={"hover:text-success"}
-            previousClassName={"hover:text-success"}
-          />
-        </div>
-      )}
     </Layout>
   ) : (
     <Loading />

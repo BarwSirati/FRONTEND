@@ -25,6 +25,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
     data = {},
     isFetching,
     isError,
+    isSuccess
   } = useGetQuestionQuery({
     token: token,
     questionId: questionId,
@@ -74,7 +75,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
     await compileCode({ token: token, data: body });
     setReload(true);
   };
-  const [count, setCount] = useState(2);
+  const [count, setCount] = useState(1);
   useEffect(() => {
     if (reload) {
       const interval = setInterval(() => {
@@ -85,7 +86,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
       return () => clearInterval(interval);
     }
   }, [count, reload, router]);
-  return !reload ? (
+  return  !reload ? (
     <Layout>
       <div className="app-body text-white">
         <div className="md:flex flex-row w-full md:space-x-7 md:space-y-0 space-y-5">
@@ -195,6 +196,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
               <div className="p-1 flex">
                 <div className="ml-auto space-x-4">
                   <button
+                    type="button"
                     className="btn btn-error"
                     onClick={() => router.back()}
                   >

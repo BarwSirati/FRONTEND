@@ -70,7 +70,7 @@ const Profile = ({ token }) => {
     <Layout>
       <div className="max-w-6xl md:flex flex-row mx-auto font-bold">
         <div className="md:w-1/2 p-5 text-center text-white">
-          <div className="card w-full bg-base-100 shadow-xl">
+          <div className="card w-full bg-[#2A303C] shadow-xl">
             <div className="card-body bg-primary p-4 text-2xl">
               <h2>Profile</h2>
             </div>
@@ -110,7 +110,7 @@ const Profile = ({ token }) => {
         </div>
         <div className="md:w-1/2 p-5 text-center text-white">
           <div className="flex-row md:space-y-16 space-y-10">
-            <div className="card w-full bg-base-100 shadow-xl mx-auto">
+            <div className="card w-full bg-[#2A303C] shadow-xl mx-auto">
               <div className="card-body bg-primary p-4 text-2xl">
                 <h2>Score</h2>
               </div>
@@ -130,7 +130,7 @@ const Profile = ({ token }) => {
               </div>
             </div>
 
-            <div className="card w-full bg-base-100 shadow-xl mx-auto">
+            <div className="card w-full bg-[#2A303C] shadow-xl mx-auto">
               <div className="card-body bg-primary p-4 text-2xl">
                 <h2>Progress</h2>
               </div>

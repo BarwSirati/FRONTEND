@@ -35,7 +35,7 @@ const Table = ({ token }) => {
 
   return (
     <div className="overflow-x-auto max-w-5xl mt-14 text-white mx-auto">
-      <table className="table table-normal  w-full">
+      <table className="table table-normal w-full">
         <thead>
           <tr className="text-center">
             <th>
@@ -95,7 +95,7 @@ const Table = ({ token }) => {
             displayUsers.map((user, key) => {
               return (
                 <tr className="text-center" key={key}>
-                  <th>{user.num}</th>
+                  <td>{user.num}</td>
                   <td>
                     <div className="font-bold">{user.name}</div>
                   </td>

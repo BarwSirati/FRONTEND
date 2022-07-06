@@ -905,6 +905,13 @@ progress::-moz-progress-bar {
   @apply border-collapse border-solid border-[1px] p-[10px];
 }
 
+table tbody tr td{
+  background-color: #2A303C !important;
+}
+
+table tbody tr th{
+  background-color: #2A303C !important;
+}
 
 
 /* width */

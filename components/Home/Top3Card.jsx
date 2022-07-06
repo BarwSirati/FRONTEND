@@ -27,7 +27,7 @@ const Top3Card = ({ token }) => {
           </div>
         </div>
       ) : isFetching ? (
-        <div className="card md:w-96 lg:-my-16 mt-10 bg-base-100 shadow-xl mx-auto">
+        <div className="card md:w-96 lg:-my-16 mt-10 bg-[#2A303C] shadow-xl mx-auto">
           <div className="card-body ">
             <h2 className="card-title text-2xl text-white justify-center">
               Loading
@@ -41,7 +41,7 @@ const Top3Card = ({ token }) => {
               return (
                 <div
                   key={key}
-                  className="card md:w-96 lg:-my-40 my-5 bg-base-100 shadow-xl"
+                  className="card md:w-96 lg:-my-40 my-5 bg-[#2A303C] shadow-xl"
                 >
                   <figure className="pt-10">
                     <Image src={PlanetImageSwitch(user.group)} alt="Shoes" />
