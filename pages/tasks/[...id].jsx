@@ -85,11 +85,11 @@ const Submit = ({ token, userId, questionId, submit }) => {
       return () => clearInterval(interval);
     }
   }, [count, reload, router]);
-  return  !reload ? (
+  return !reload ? (
     <Layout>
       <div className="app-body text-white">
         <div className="md:flex flex-row w-full md:space-x-7 md:space-y-0 space-y-5">
-          <div className="card md:w-[47%] bg-base-100 shadow-xl rounded-lg">
+          <div className="card md:w-[47%] bg-[#2A303C] shadow-xl rounded-lg">
             <div className="problem-contents md:max-h-[590px] scrollbar">
               <h1 className="text-right prompt font-bold text-warning text-lg">
                 {isFetching ? "Loading" : data.issuer}
@@ -154,8 +154,8 @@ const Submit = ({ token, userId, questionId, submit }) => {
               )}
             </div>
           </div>
-          <div className="card md:w-[53%] bg-base-100 shadow-xl rounded-lg p-1">
-            <div className="p-4 bg-base-100 flex text-center space-x-5">
+          <div className="card md:w-[53%] bg-[#2A303C] shadow-xl rounded-lg p-1">
+            <div className="p-4 bg-[#2A303C] flex text-center space-x-5">
               <div className="w-1/2 bg-slate-900 p-3 rounded-lg font-bold">
                 <h1>RESULT</h1>
                 <h1
@@ -183,7 +183,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
                   value={submit.sourceCode ? submit.sourceCode : ""}
                   extensions={[cpp()]}
                   theme="dark"
-                  className="whitespace-pre prompt"
+                  className="whitespace-pre prompt bg-[#2A303C]"
                   placeholder={"🔥🔥 CODE HERE 🔥🔥"}
                   spellCheck={true}
                   onChange={(value) => {
@@ -193,7 +193,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
                 />
               </div>
               <div className="p-1 flex">
-                <div className="ml-auto space-x-4">
+                <div className="mr-auto">
                   <button
                     type="button"
                     className="btn btn-error"
@@ -201,7 +201,9 @@ const Submit = ({ token, userId, questionId, submit }) => {
                   >
                     BACK
                   </button>
-                  <button type="submit" className="btn btn-warning">
+                </div>
+                <div className="ml-auto">
+                  <button type="submit" className="btn btn-success">
                     SUBMIT
                   </button>
                 </div>
