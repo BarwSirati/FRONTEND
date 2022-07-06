@@ -131,7 +131,6 @@ const Tasks = ({ token, user }) => {
       return star;
     }
   };
-  console.log(questions);
   return isSuccess ? (
     <Layout>
       <div className="md:space-x-4 bg-primary md:space-y-0 space-y-3 rounded-lg p-2 text-white md:flex">
