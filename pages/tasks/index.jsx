@@ -191,7 +191,7 @@ const Tasks = ({ token, user }) => {
                   }  shadow-xl cursor-pointer hover:scale-105  transition-all`}
                 >
                   <div className="card-body text-center font-semibold text-md">
-                    <h2 className="prompt">{ques.title}</h2>
+                    <h2 className="prompt text-xl">{ques.title}</h2>
                     <p className="prompt">{ques.unit}</p>
                     <div className="flex w-full justify-center space-x-2">
                       {renderStar(ques.rank)}
