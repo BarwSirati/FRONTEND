@@ -35,26 +35,31 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
   const onSubmit = async (data) => {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND}/auth/user/login`,
-      data
-    );
-    if (res.status === 200) {
-      const token = res.data.accessToken;
-      setCookie("token", token, {
-        maxAge: 7 * 24 * 60 * 60,
-        path: "/",
-        sameSite: "strict",
-        secure: true,
-      });
-      const user = jwtDecode(token);
-      dispatch(setCredentials({ ...user }));
-      router.push("/");
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND}/auth/user/login`,
+        data
+      );
+      console.log(res.status);
+      if (res.status === 200) {
+        const token = res.data.accessToken;
+        setCookie("token", token, {
+          maxAge: 7 * 24 * 60 * 60,
+          path: "/",
+          sameSite: "strict",
+          secure: true,
+        });
+        const user = jwtDecode(token);
+        dispatch(setCredentials({ ...user }));
+        router.push("/");
+      }
+    } catch (err) {
+      window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     }
   };
   return (
     <Fragment>
-      <div className="starLogin absolute z-10"></div>
+      <div className="starLogin absolute z-10 flags{UCdzd2hhIFNvIEN1dGU=}"></div>
       <div className="flex flex-col items-center justify-center min-h-screen px-4 space-y-8 z-20">
         <div className="flex space-x-4 font-bold">
           <h1 className="md:text-5xl text-4xl text-white pt-3">CEBOOSTUP</h1>
