@@ -76,7 +76,7 @@ const Login = () => {
               <div className="flex">
                 <FontAwesomeIcon
                   icon={faUser}
-                  className={`icon-login-form ${
+                  className={`icon-login-form fa-fw ${
                     errors.username ? "bg-red-600 " : "bg-gray-900 "
                   } `}
                 />
@@ -90,7 +90,7 @@ const Login = () => {
               <div className="flex">
                 <FontAwesomeIcon
                   icon={faKey}
-                  className={`icon-login-form ${
+                  className={`icon-login-form fa-fw ${
                     errors.password ? "bg-red-600" : "bg-gray-900 "
                   }`}
                 />
