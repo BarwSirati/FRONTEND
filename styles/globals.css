@@ -895,24 +895,23 @@ progress::-moz-progress-bar {
   font-family: Consolas, "courier new" !important;
 }
 
-.tableBorder{
+.tableBorder {
   @apply border-collapse border-solid border-[1px] p-[10px];
 }
-.tableBorder thead tr th{
+.tableBorder thead tr th {
   @apply border-collapse border-solid border-[1px] p-[10px];
 }
-.tableBorder tbody tr td{
+.tableBorder tbody tr td {
   @apply border-collapse border-solid border-[1px] p-[10px];
 }
 
-table tbody tr td{
-  background-color: #2A303C !important;
+table tbody tr td {
+  background-color: #2a303c !important;
 }
 
-table tbody tr th{
-  background-color: #2A303C !important;
+table tbody tr th {
+  background-color: #2a303c !important;
 }
-
 
 /* width */
 .scrollbar::-webkit-scrollbar {
@@ -934,18 +933,15 @@ table tbody tr th{
   @apply bg-slate-700;
 }
 
-.cm-line {
-  font-family: Consolas, "courier new" !important;
-  font-size: 16px !important;
-}
-.cm-gutters {
-  font-family: Consolas, "courier new" !important;
-  font-size: 15px !important;
-}
 .cm-activeLineGutter {
   background: transparent !important;
 }
 .cm-scroller {
   width: 100%;
   overflow-x: hidden !important;
+}
+.cm-line span {
+  font-family: "Prompt", sans-serif !important;
+  font-size: 17px;
+  font-weight: bold;
 }

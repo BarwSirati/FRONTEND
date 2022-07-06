@@ -191,9 +191,9 @@ const Tasks = ({ token, user }) => {
                       : "bg-[#2A303C]"
                   }  shadow-xl cursor-pointer hover:scale-105  transition-all`}
                 >
-                  <div className="card-body text-center">
-                    <h2 className="">{ques.title}</h2>
-                    <p>{ques.unit}</p>
+                  <div className="card-body text-center font-semibold text-md">
+                    <h2 className="prompt">{ques.title}</h2>
+                    <p className="prompt">{ques.unit}</p>
                     <div className="flex w-full justify-center space-x-2">
                       {renderStar(ques.rank)}
                     </div>

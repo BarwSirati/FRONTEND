@@ -25,7 +25,6 @@ const Submit = ({ token, userId, questionId, submit }) => {
     data = {},
     isFetching,
     isError,
-    isSuccess
   } = useGetQuestionQuery({
     token: token,
     questionId: questionId,
@@ -75,7 +74,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
     await compileCode({ token: token, data: body });
     setReload(true);
   };
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(2);
   useEffect(() => {
     if (reload) {
       const interval = setInterval(() => {
@@ -184,7 +183,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
                   value={submit.sourceCode ? submit.sourceCode : ""}
                   extensions={[cpp()]}
                   theme="dark"
-                  className="whitespace-pre "
+                  className="whitespace-pre prompt"
                   placeholder={"🔥🔥 CODE HERE 🔥🔥"}
                   spellCheck={true}
                   onChange={(value) => {

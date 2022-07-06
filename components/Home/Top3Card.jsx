@@ -43,20 +43,19 @@ const Top3Card = ({ token }) => {
                   key={key}
                   className="card md:w-96 lg:-my-40 my-5 bg-[#2A303C] shadow-xl"
                 >
-                  <figure className="pt-10">
-                    <Image src={PlanetImageSwitch(user.group)} alt="Shoes" />
+                  <figure
+                    className={`${
+                      user.group === 5 ? "md:w-96 my-3" : "w-48"
+                    }  mx-auto`}
+                  >
+                    <Image src={PlanetImageSwitch(user.group)} alt="profile" />
                   </figure>
                   <div className="card-body text-center items-center">
                     <h2 className="card-title text-2xl text-success">
                       {user.name}
                     </h2>
                     <div className="flex space-x-5">
-                      <h2 className="md:text-2xl text-lg text-warning font-semibold">
-                        Score : {user.score}
-                      </h2>
-                      <h2 className="md:text-2xl text-lg text-error font-semibold">
-                        Finished : {user.finished}
-                      </h2>
+                     
                     </div>
                   </div>
                 </div>
