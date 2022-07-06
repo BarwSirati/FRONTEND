@@ -173,56 +173,52 @@ const Tasks = ({ token, user }) => {
           </select>
         </div>
       </div>
-      <div className="card w-full bg-[#1D222A] shadow-xl mt-6 mb-2 rounded-md text-white">
-        <div className="rounded-t-md bg-primary p-1 text-center text-2xl font-bold">
-          Mission
-        </div>
-        <div className="md:grid md:grid-cols-3 md:gap-6 p-5 md:space-y-0 space-y-4">
-          {displayQuestion.map((ques, key) => {
-            return (
-              <Link key={key} href={`/tasks/${ques._id}`}>
-                <div
-                  className={`card w-full ${
-                    ques.result != "" && !ques.status
-                      ? "bg-red-600"
-                      : ques.status
-                      ? "bg-lime-600"
-                      : "bg-[#2A303C]"
-                  }  shadow-xl cursor-pointer hover:scale-105  transition-all`}
-                >
-                  <div className="card-body text-center font-semibold text-md">
-                    <h2 className="prompt text-xl">{ques.title}</h2>
-                    <p className="prompt">{ques.unit}</p>
-                    <div className="flex w-full justify-center space-x-2">
-                      {renderStar(ques.rank)}
-                    </div>
+
+      <div className="md:grid md:grid-cols-3 md:gap-8 mt-8 md:space-y-0 space-y-4 text-white">
+        {displayQuestion.map((ques, key) => {
+          return (
+            <Link key={key} href={`/tasks/${ques._id}`}>
+              <div
+                className={`card w-full ${
+                  ques.result != "" && !ques.status
+                    ? "bg-red-600"
+                    : ques.status
+                    ? "bg-lime-600"
+                    : "bg-[#2A303C]"
+                }  shadow-xl cursor-pointer hover:scale-105 transition-all`}
+              >
+                <div className="card-body text-center font-semibold text-md">
+                  <h2 className="prompt text-xl">{ques.title}</h2>
+                  <p className="prompt">{ques.unit}</p>
+                  <div className="flex w-full justify-center space-x-2">
+                    {renderStar(ques.rank)}
                   </div>
                 </div>
-              </Link>
-            );
-          })}
-        </div>
-        {isSuccess && (
-          <div className="text-2xl pb-4">
-            <ReactPaginate
-              className="flex space-x-10 justify-center"
-              pageClassName="hover:text-success text-white"
-              breakLabel="..."
-              previousLabel={<FontAwesomeIcon icon={faCaretLeft} />}
-              nextLabel={<FontAwesomeIcon icon={faCaretRight} />}
-              pageCount={Math.ceil(questions.length / questionsPerPage)}
-              onPageChange={({ selected }) => {
-                setPageNumber(selected);
-              }}
-              activeClassName={"text-success"}
-              pageRangeDisplayed={2}
-              renderOnZeroPageCount={null}
-              nextClassName={"hover:text-success text-white"}
-              previousClassName={"hover:text-success text-white"}
-            />
-          </div>
-        )}
+              </div>
+            </Link>
+          );
+        })}
       </div>
+      {isSuccess && (
+        <div className="text-2xl mt-4">
+          <ReactPaginate
+            className="flex space-x-10 justify-center"
+            pageClassName="hover:text-success text-white"
+            breakLabel="..."
+            previousLabel={<FontAwesomeIcon icon={faCaretLeft} />}
+            nextLabel={<FontAwesomeIcon icon={faCaretRight} />}
+            pageCount={Math.ceil(questions.length / questionsPerPage)}
+            onPageChange={({ selected }) => {
+              setPageNumber(selected);
+            }}
+            activeClassName={"text-success"}
+            pageRangeDisplayed={2}
+            renderOnZeroPageCount={null}
+            nextClassName={"hover:text-success text-white"}
+            previousClassName={"hover:text-success text-white"}
+          />
+        </div>
+      )}
     </Layout>
   ) : (
     <Loading />

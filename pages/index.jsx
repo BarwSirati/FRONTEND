@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { getCookie } from "cookies-next";
-import Loading from "../components/Loading";
 import Layout from "../components/Layout";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../hooks/api/auth/authSlice";
