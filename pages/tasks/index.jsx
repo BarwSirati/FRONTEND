@@ -9,6 +9,7 @@ import jwtDecode from "jwt-decode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
+  faMoon,
   faMeteor,
   faCaretRight,
   faCaretLeft,
@@ -102,7 +103,7 @@ const Tasks = ({ token, user }) => {
     if (!rank) {
       return (
         <Fragment>
-          <FontAwesomeIcon icon={faMeteor} className="text-red-600 text-3xl" />
+          <FontAwesomeIcon icon={faMeteor} className="text-rose-500 text-3xl" />
         </Fragment>
       );
     } else if (rank < 4) {
@@ -112,7 +113,7 @@ const Tasks = ({ token, user }) => {
           <FontAwesomeIcon
             key={i}
             icon={faStar}
-            className="text-warning text-3xl"
+            className="text-yellow-400 text-3xl"
           />
         );
       }
@@ -123,32 +124,36 @@ const Tasks = ({ token, user }) => {
         star.push(
           <FontAwesomeIcon
             key={i}
-            icon={faStar}
-            className="text-red-600 text-3xl"
+            icon={faMoon}
+            className="text-sky-500 text-3xl"
           />
         );
       }
       return star;
     }
   };
+
+  const [isActive, setIsActive] = useState(false);
+
+  const handleClick = event => {
+    event.currentTarget.classList.add('clicked');
+  };
+  const ribbonHandler = (ques) => {
+    if(ques.result !== "" && !ques.status) {
+      return(<div className="ribbon orange">In Progress...</div>);
+    } else if(ques.status)
+      return (<div className="ribbon green">Complete</div>);
+    else
+      return (<div className="ribbon gray">Incomplete</div>);
+  }
+
   return isSuccess ? (
     <Layout>
-      <div className="md:space-x-4 bg-primary md:space-y-0 space-y-3 rounded-lg p-2 text-white md:flex">
-        <div>
-          <input
-            type="text"
-            name=""
-            id=""
-            className="rounded-md p-2 w-full focus:outline-none bg-purple-search bg-opacity-50"
-            placeholder="Search Name"
-            onChange={searchName}
-          />
-        </div>
-
-        <div>
+      <div className="task-wrapper">
+        <div className="task-search">
           <select
             name="unit"
-            className="rounded-md p-2 w-full focus:outline-none bg-purple-search bg-opacity-50"
+            className="search-input md:shrink"
             onChange={filterUnit}
           >
             <option value="">All Unit</option>
@@ -160,65 +165,66 @@ const Tasks = ({ token, user }) => {
             <option value="Reverse Engineer">Reverse Engineer</option>
             <option value="CTF">CTF</option>
           </select>
-        </div>
-        <div className="flex">
           <select
             name="complete"
-            className="rounded-md p-2  w-full focus:outline-none bg-purple-search bg-opacity-50"
+            className="search-input md:shrink"
             onChange={filterComplete}
           >
             <option value="">Status</option>
             <option value="true">Complete</option>
-            <option value="false">Uncomplete</option>
+            <option value="false">Incomplete</option>
           </select>
-        </div>
-      </div>
-
-      <div className="md:grid md:grid-cols-3 md:gap-8 mt-8 md:space-y-0 space-y-4 text-white">
-        {displayQuestion.map((ques, key) => {
-          return (
-            <Link key={key} href={`/tasks/${ques._id}`}>
-              <div
-                className={`card w-full ${
-                  ques.result != "" && !ques.status
-                    ? "bg-red-600"
-                    : ques.status
-                    ? "bg-lime-600"
-                    : "bg-[#2A303C]"
-                }  shadow-xl cursor-pointer hover:scale-105 transition-all`}
-              >
-                <div className="card-body text-center font-semibold text-md">
-                  <h2 className="prompt text-xl">{ques.title}</h2>
-                  <p className="prompt">{ques.unit}</p>
-                  <div className="flex w-full justify-center space-x-2">
-                    {renderStar(ques.rank)}
-                  </div>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-      {isSuccess && (
-        <div className="text-2xl mt-4">
-          <ReactPaginate
-            className="flex space-x-10 justify-center"
-            pageClassName="hover:text-success text-white"
-            breakLabel="..."
-            previousLabel={<FontAwesomeIcon icon={faCaretLeft} />}
-            nextLabel={<FontAwesomeIcon icon={faCaretRight} />}
-            pageCount={Math.ceil(questions.length / questionsPerPage)}
-            onPageChange={({ selected }) => {
-              setPageNumber(selected);
-            }}
-            activeClassName={"text-success"}
-            pageRangeDisplayed={2}
-            renderOnZeroPageCount={null}
-            nextClassName={"hover:text-success text-white"}
-            previousClassName={"hover:text-success text-white"}
+          <input
+              type="text"
+              name=""
+              id=""
+              className="search-input grow bai-jamjuree font-semibold"
+              placeholder="Search Name"
+              onChange={searchName}
           />
         </div>
+
+        <div className="task-grid">
+          {displayQuestion.map((ques, key) => {
+            return (
+              <Link key={key} href={`/tasks/${ques._id}`}>
+                <div onClick={handleClick}
+                  className={`task-card ${ques.status ? "complete" : ""}`}
+                >
+                  {ribbonHandler(ques)}
+                  <span className="star">
+                    {renderStar(ques.rank)}
+                  </span>
+                  <div className="contain">
+                    <h2 className="head overflow-hidden text-ellipsis whitespace-pre">{ques.title}</h2>
+                    <p className="unit">{ques.unit}</p>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+        {isSuccess && (
+          <div className="task-pagination">
+            <ReactPaginate
+              className="task-paginate"
+              pageClassName="task-paginate-item"
+              breakLabel="..."
+              previousLabel={<FontAwesomeIcon icon={faCaretLeft} />}
+              nextLabel={<FontAwesomeIcon icon={faCaretRight} />}
+              pageCount={Math.ceil(questions.length / questionsPerPage)}
+              onPageChange={({ selected }) => {
+                setPageNumber(selected);
+              }}
+              activeClassName={"active"}
+              pageRangeDisplayed={2}
+              renderOnZeroPageCount={null}
+              nextClassName={"task-paginate-arrow"}
+              previousClassName={"task-paginate-arrow"}
+            />
+          </div>
       )}
+      </div>
     </Layout>
   ) : (
     <Loading />

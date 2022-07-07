@@ -1,5 +1,5 @@
 const AppLayout = ({ children }) => {
-  return <div className="w-screen h-screen flex flex-col ">{children}</div>;
+  return <div className="app-layout">{children}</div>;
 };
 
 export default AppLayout;
