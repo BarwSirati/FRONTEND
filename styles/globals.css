@@ -62,17 +62,17 @@ button, a {
 }
 
 .navbar {
-	@apply px-4 pt-6;
+	@apply px-4 pt-6 pb-5;
 	background: var(--dark);
 }
 .navbar-header {
 	@apply flex space-x-3 font-bold mr-auto normal-case;
 }
 .navbar-header > .ceboostup {
-	@apply md:text-4xl text-3xl text-white;
+	@apply lg:text-4xl text-3xl text-white;
 }
 .navbar-header > .x {
-	@apply md:text-6xl text-5xl text-red-logo;
+	@apply lg:text-6xl text-5xl text-red-logo;
 }
 
 .navbar-menu {
@@ -90,7 +90,7 @@ button, a {
 }
 
 .navbar-menu-mobile {
-	@apply fixed w-screen md:hidden top-[80px];
+	@apply fixed w-screen lg:hidden top-[90px];
 	@apply bg-slate-800 py-4;
 	opacity: 0;
 	transform: translateX(-100vw);
@@ -393,7 +393,7 @@ select.search-input {
 
 /* Tasks */
 .submit-wrapper {
-	@apply lg:h-[calc(100vh-140px)];
+	@apply lg:h-[calc(100vh-150px)];
 	@apply lg:flex flex-row w-full;
 	@apply lg:space-y-0 space-y-4;
 	@apply lg:space-x-4 space-x-0;
@@ -622,13 +622,14 @@ select.search-input {
 	@apply w-full flex justify-end;
 }
 .submit-code .code .code-submit > button {
-	margin-top: 10px;
+	margin-top: 8px;
 	border: 2px solid;
 	@apply border-rose-500 text-lg;
 	@apply text-rose-500;
 	border-radius: 10px;
-	padding: 0.5rem 4rem;
+	padding: 0.5rem 0;
 	transition: all 200ms;
+	width: 100%;
 }
 .submit-code .code .code-submit > button:hover {
 	@apply bg-rose-500;

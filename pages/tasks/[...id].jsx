@@ -98,7 +98,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
               {isFetching ? "Loading..." : "by " + data.issuer}
             </span>
           </div>
-          <a href={data.pdfLink} target="_blank" rel="noreferrer">
+          <a href={isFetching ? "" : data.pdfLink} target="_blank" rel="noreferrer">
             <h1 className="title">
               {isFetching ? "Loading..." : data.title}
             </h1>
