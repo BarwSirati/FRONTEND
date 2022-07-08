@@ -39,9 +39,6 @@ const Home = ({ token, user }) => {
         <h1>Top 3 Ranking</h1>
         <Top3Card token={token} />
       </article>
-      <div className="home-rocket">
-        <Image src={RocketJet} alt="" />
-      </div>
     </Layout>
   );
 };

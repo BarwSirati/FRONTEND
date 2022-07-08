@@ -83,8 +83,9 @@ const Submit = ({ token, userId, questionId, submit }) => {
       return () => clearInterval(interval);
     }
   }, [count, reload, router]);
-  return !reload ? (
+  return (
     <Layout>
+      <Loading className={reload ? "active" : ""}/>
       <div className="submit-wrapper">
         <div className="submit-problem">
           <div className="head">
@@ -202,9 +203,7 @@ const Submit = ({ token, userId, questionId, submit }) => {
         </div>
       </div>
     </Layout>
-  ) : (
-    <Loading />
-  );
+  )
 };
 export const getServerSideProps = async (context) => {
   const isAuth = getCookie("token", context);
