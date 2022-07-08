@@ -19,24 +19,22 @@ const Navbar = () => {
     router.push("/login");
   };
   return (
-    <div>
-      <div className="navbar z-50 md:p-4 top-0 p-5 ">
-        <div className="flex space-x-3 font-bold md:pl-3 mr-auto">
-          <h1 className="normal-case md:text-4xl text-3xl text-white">
-            CEBOOSTUP
-          </h1>
-          <h1 className="normal-case md:text-6xl text-5xl text-red-logo">X</h1>
-        </div>
-        <div className="flex-none hidden lg:block  ml-auto">
-          <ul className="space-x-8 menu-horizontal  p-0 md:pr-3">
+    <header className="navbar-wrapper">
+      <div className="navbar">
+        <h1 className="navbar-header">
+          <span className="ceboostup">CEBOOSTUP</span>
+          <span className="x">X</span>
+        </h1>
+        <div className="navbar-menu">
+          <ul className="navbar-menu-wrapper">
             {path.map((link) => {
               return (
                 <Link key={link.key} href={link.to}>
                   <li
-                    className={`cursor-pointer text-white text-xl font-bold hover:border-b-4 hover:border-red-logo ${
+                    className={`navbar-menu-item ${
                       router.asPath === link.to ||
                       (link.key === 2 && router.pathname === "/tasks/[...id]")
-                        ? "nav-menu-active"
+                        ? "active"
                         : ""
                     }`}
                   >
@@ -46,14 +44,14 @@ const Navbar = () => {
               );
             })}
             <li
-              className={`text-white text-xl font-bold cursor-pointer  hover:border-b-4 hover:border-red-logo`}
+              className={`navbar-menu-item`}
             >
               <a onClick={logout}>LOGOUT</a>
             </li>
           </ul>
         </div>
-        <div className="lg:hidden block">
-          <label className="btn btn-outline btn-info swap swap-rotate justify-items-center">
+        <div className="navbar-menu-mobile-button">
+          <label>
             <input
               type="checkbox"
               onClick={() => {
@@ -62,17 +60,17 @@ const Navbar = () => {
             />
             <FontAwesomeIcon
               icon={faBars}
-              className="swap-off fill-current text-2xl font-bold"
+              className="swap-off icon"
             />
             <FontAwesomeIcon
               icon={faXmark}
-              className="swap-on fill-current text-2xl font-bold"
+              className="swap-on icon"
             />
           </label>
         </div>
       </div>
       <div
-        className={`hamburger-menu  space-y-10 ${isOpen ? "block" : "hidden"}`}
+        className={`navbar-menu-mobile ${isOpen ? "active" : ""}`}
       >
         <ul>
           {path.map((link) => {
@@ -80,23 +78,23 @@ const Navbar = () => {
               <Link key={link.key} href={link.to}>
                 <li
                   key={link.key}
-                  className={`cursor-pointer text-white p-3 hover:rounded-lg text-xl font-bold hover:bg-black my-3 ${
-                    router.asPath === link.to ? "hamburger-menu-active" : ""
+                  className={`navbar-menu-mobile-item ${
+                    router.asPath === link.to ? "active" : ""
                   }`}
                 >
-                  <a>{link.name}</a>
+                  <span>{link.name}</span>
                 </li>
               </Link>
             );
           })}
           <li
-            className={`cursor-pointer text-white p-3 hover:rounded-lg text-xl font-bold hover:bg-black my-3`}
+            className={`navbar-menu-mobile-item`}
           >
-            <a onClick={logout}>LOGOUT</a>
+            <span onClick={logout}>LOGOUT</span>
           </li>
         </ul>
       </div>
-    </div>
+    </header>
   );
 };
 

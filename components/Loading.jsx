@@ -1,11 +1,14 @@
 import React, { Fragment } from "react";
-const Loading = () => {
+const Loading = (props) => {
+  const handleTransition = event => {
+    event.currentTarget.classList.add('fade-in');
+  };
   return (
     <Fragment>
-      <div className="flex flex-col items-center justify-center min-h-screen px-4 space-y-8 z-20 ">
-        <div className="flex flex-row w-full overflow-hidden shadow rounded-2xl">
-          <div className="flex flex-col p-8 flex-auto text-center ">
-            <div className="denied__wrapper text-center">
+      <div onTransitionEnd={handleTransition} className={`${props.className} loading-wrapper`}>
+        <div>
+          <div>
+            <div>
               <svg
                 id="astronaut"
                 xmlns="http://www.w3.org/2000/svg"
@@ -15,10 +18,10 @@ const Loading = () => {
                 <style
                   dangerouslySetInnerHTML={{
                     __html:
-                      "\n      .st0{fill:none;} .st1{fill:#504E55;} .st2{fill:#F39E72;} .st3{fill:#FFFFFF;} .st4{opacity:0.24;} .st5{fill:#77574E;} .st6{fill:#FBD68D;} .st7{fill:#ECECEC;} .st8{fill:#F4A89C;} .st9{fill:#CFC9E5;} .st10{opacity:0.28;} .st11{opacity:0.25;} .st12{fill:#6F635C;} .st13{fill:#DAE7BE;} .st14{fill:#FFE0A6;} .st15{fill:#5F5E60;} .st16{fill:#CFE1AF;} .st17{fill:#EBE9F5;} .st18{fill:#53515A;} .st19{opacity:0.42;} .st20{fill:#53515B;}\n    ",
+                      "\n.st0{fill:none;} .st1{fill:#504E55;} .st2{fill:#F39E72;} .st3{fill:#FFFFFF;} .st4{opacity:0.24;} .st5{fill:#77574E;} .st6{fill:#FBD68D;} .st7{fill:#ECECEC;} .st8{fill:#F4A89C;} .st9{fill:#CFC9E5;} .st10{opacity:0.28;} .st11{opacity:0.25;} .st12{fill:#6F635C;} .st13{fill:#DAE7BE;} .st14{fill:#FFE0A6;} .st15{fill:#5F5E60;} .st16{fill:#CFE1AF;} .st17{fill:#EBE9F5;} .st18{fill:#53515A;} .st19{opacity:0.42;} .st20{fill:#53515B;}\n",
                   }}
                 />
-                <circle cx="256.8" cy="255.3" r="247.9" className="st0" />
+                <circle cx="256.8" cy="255.3" r="247.9" className="st0"/>
                 <path
                   d="M346.4 475H164.9V244.8c0-14 11.4-25.4 25.4-25.4H321c14 0 25.4 11.4 25.4 25.4V475z"
                   className="st2"
@@ -329,7 +332,15 @@ const Loading = () => {
                 </g>
               </svg>
             </div>
-            <h1 className="text-5xl text-white">Loading...</h1>
+            <h1 className="text-white">
+              <div className="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div className="load"></div>
+            </h1>
           </div>
         </div>
       </div>

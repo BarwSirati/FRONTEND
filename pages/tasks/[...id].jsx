@@ -44,19 +44,17 @@ const Submit = ({ token, userId, questionId, submit }) => {
   for (const key in data.ex_output) {
     if (data.ex_output[key]) {
       example.push(
-        <div key={key} className="mt-5">
-          <h1 className="text-secondary">TestCase {Number(key) + 1} : </h1>
-          <br />
+        <div key={key} className="wrapper">
+          <h3>Case {Number(key) + 1}</h3>
           <code className="code-block">
-            <div className="flex consolas">
-              <h1>Input &nbsp;&nbsp;&nbsp;:</h1>
-              <p className="ml-2 consolas">
-                {data.ex_input[key] ? data.ex_input[key] : ""}
-              </p>
+            <div className="input">
+              <h4><div>Input</div></h4>
+              <p>{data.ex_input[key] ? data.ex_input[key] : ""}</p>
             </div>
-            <div className="flex consolas">
-              <h1>Output :</h1>
-              <p className="ml-2 consolas">{data.ex_output[key]}</p>
+            <hr/>
+            <div className="output">
+              <h4><div>Output</div></h4>
+              <p>{data.ex_output[key]}</p>
             </div>
           </code>
         </div>
@@ -85,137 +83,127 @@ const Submit = ({ token, userId, questionId, submit }) => {
       return () => clearInterval(interval);
     }
   }, [count, reload, router]);
-  return !reload ? (
+  return (
     <Layout>
-      <div className="app-body text-white">
-        <div className="md:flex flex-row w-full md:space-x-7 md:space-y-0 space-y-5">
-          <div className="card md:w-[47%] bg-[#2A303C] shadow-xl rounded-lg">
-            <div className="problem-contents md:max-h-[590px] scrollbar">
-              <h1 className="text-right prompt font-bold text-warning text-lg">
-                {isFetching ? "Loading" : data.issuer}
-              </h1>
-              <a href={data.pdfLink} target="_blank" rel="noreferrer">
-                <h1 className="text-center my-2 text-2xl font-bold prompt text-success">
-                  {isFetching ? "Loading" : data.title}
-                </h1>
-              </a>
-              <hr />
-              <p className="my-5 indent-10 prompt md:whitespace-pre-wrap">
-                {isFetching ? "Loading" : data.detail}
-              </p>
-              <div>
-                <h1 className="text-secondary">Example : </h1>
-                <br />
-                <div className="relative overflow-x-auto">
-                  <table className="tableBorder" width="100%">
-                    <thead>
-                      <tr>
-                        <th className="prompt">Input</th>
-                        <th className="prompt">Output</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="text-sm">
-                        <td>
-                          <p className="prompt">
-                            {isFetching ? "Loading" : data.detail_input}
-                          </p>
-                        </td>
-                        <td>
-                          <p className="prompt">
-                            {isFetching ? "Loading" : data.detail_output}
-                          </p>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+      <Loading className={reload ? "active" : ""}/>
+      <div className="submit-wrapper">
+        <div className="submit-problem">
+          <div className="head">
+            <button
+                type="button"
+                onClick={() => router.back()}
+            >
+              BACK
+            </button>
+            <span className="author">
+              {isFetching ? "Loading..." : "by " + data.issuer}
+            </span>
+          </div>
+          <a href={isFetching ? "" : data.pdfLink} target="_blank" rel="noreferrer">
+            <h1 className="title">
+              {isFetching ? "Loading..." : data.title}
+            </h1>
+          </a>
+          <p className="detail">
+            {isFetching ? "Loading..." : data.detail}
+          </p>
+          <div className="specification">
+            <h2>Specification</h2>
+            <div className="table-wrapper">
+              <div className="container">
+                <div className="row">
+                  <div className="head">Input</div>
+                  <div className="content">{isFetching ? "Loading..." : data.detail_input}</div>
+                </div>
+                <div className="row">
+                  <div className="head">Output</div>
+                  <div className="content">{isFetching ? "Loading..." : data.detail_output}</div>
                 </div>
               </div>
-              {example}
-              {data.image && (
-                <div className="mt-5">
-                  <h1 className="text-success">Image : </h1>
-                  <br />
-                  <div className="text-center">
-                    <Image
-                      src={data.image}
-                      width={200}
-                      height={200}
-                      alt="image"
-                    />
-                  </div>
-                </div>
-              )}
-              {data.note && (
-                <>
-                  <h1 className="text-success">Hint : </h1>
-                  <p className="indent-10">{data.note ? data.note : "-"}</p>
-                </>
-              )}
             </div>
           </div>
-          <div className="card md:w-[53%] bg-[#2A303C] shadow-xl rounded-lg p-1">
-            <div className="p-4 bg-[#2A303C] flex text-center space-x-5">
-              <div className="w-1/2 bg-slate-900 p-3 rounded-lg font-bold">
-                <h1>RESULT</h1>
-                <h1
-                  className={`text-2xl ${
-                    submit
-                      ? submit.status === true
-                        ? "text-success"
-                        : "text-error"
-                      : "-"
-                  }`}
-                >
-                  {submit.result ? submit.result : "-"}
-                </h1>
-              </div>
-              <div className="w-1/2 bg-slate-900 p-3 rounded-lg font-bold">
-                <h1>FINISHED</h1>
-                <h1 className="text-2xl">
-                  {isFetching ? "Loading" : data.finished}
-                </h1>
-              </div>
+          {(example.length !== 0) ? (
+            <div className="sample-case">
+              <h2>Sample Case</h2>
+              {example}
             </div>
-            <form onSubmit={handleSubmit}>
-              <div className="h-[400px] overflow-y-auto scrollbar my-5">
-                <CodeMirror
-                  value={submit.sourceCode ? submit.sourceCode : ""}
-                  extensions={[cpp()]}
-                  theme="dark"
-                  className="whitespace-pre prompt bg-[#2A303C]"
-                  placeholder={"🔥🔥 CODE HERE 🔥🔥"}
-                  spellCheck={true}
-                  onChange={(value) => {
-                    setSourceCode(value);
-                  }}
-                  aria-label="code"
+          ) : ""}
+
+          {data.image ? (
+            <div className="image">
+              <h2>Image</h2>
+              <br />
+              <div>
+                <Image
+                  src={data.image}
+                  width={200}
+                  height={200}
+                  alt="image"
                 />
               </div>
-              <div className="p-1 flex">
-                <div className="mr-auto">
-                  <button
-                    type="button"
-                    className="btn btn-error"
-                    onClick={() => router.back()}
-                  >
-                    BACK
-                  </button>
-                </div>
-                <div className="ml-auto">
-                  <button type="submit" className="btn btn-success">
-                    SUBMIT
-                  </button>
-                </div>
-              </div>
-            </form>
+            </div>
+          ) : ""}
+          {(data.note) ? (
+            <div className="hint">
+              <h2>Hint : </h2>
+              <p>{data.note}</p>
+            </div>
+          ) : ""}
+        </div>
+        <div className="submit-code">
+          {(submit
+            ? submit.status === true
+              ? <div className="ribbon green">Complete</div>
+              : <div className="ribbon orange">In Progress...</div>
+            : <div className="ribbon gray left-[15px] top-[15px]">Incomplete</div>
+          )}
+          <div className="header mt-[35px]">
+            <div className="result">
+              <h1>RESULT</h1>
+              <p
+                className={`${
+                  submit
+                    ? submit.status === true
+                      ? "success"
+                      : "failed"
+                    : ""
+                }`}
+              >
+                {submit.result ? submit.result : "-"}
+              </p>
+            </div>
+            <div className="finish">
+              <h1>FINISHED</h1>
+              <p>
+                {isFetching ? "Loading" : data.finished}
+              </p>
+            </div>
           </div>
+          <form className="code" onSubmit={handleSubmit}>
+            <div className="code-editor">
+              <CodeMirror
+                value={submit.sourceCode ? submit.sourceCode : ""}
+                extensions={[cpp()]}
+                theme="dark"
+                className="whitespace-pre monospace bg-[#2A303C]"
+                placeholder={"Write your program..."}
+                spellCheck={false}
+                onChange={(value) => {
+                  setSourceCode(value);
+                }}
+                aria-label="code"
+              />
+            </div>
+            <div className="code-submit">
+              <button type="submit">
+                SUBMIT
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </Layout>
-  ) : (
-    <Loading />
-  );
+  )
 };
 export const getServerSideProps = async (context) => {
   const isAuth = getCookie("token", context);

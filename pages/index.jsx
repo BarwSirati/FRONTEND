@@ -19,35 +19,26 @@ const Home = ({ token, user }) => {
   }, [dispatch, user]);
   return (
     <Layout>
-      <div className="text-center relative mt-40 z-10 hero">
-        <div className="hero-content">
-          <div className="max-w-xl space-y-5">
-            <h1 className="text-white md:text-5xl text-2xl font-semibold">
-              Practice C Programing
-            </h1>
-            <h1 className="text-white md:text-4xl text-xl font-semibold">
-              In 1 Week
-            </h1>
-            <Link href="/tasks">
-              <button className="cursor-pointer btn btn-outline btn-success my-5">
-                GET START
-              </button>
-            </Link>
+      <article className="home-header-wrapper">
+        <h1>
+          <div className="practice">
+            Practice C Programing
           </div>
-        </div>
-      </div>
+          <div className="week">
+            In 1 Week
+          </div>
+          <Link href="/tasks">
+            <button className="border-2 btn btn-outline btn-success">
+              GET START
+            </button>
+          </Link>
+        </h1>
+      </article>
       <Planet />
-      <div className="rocketJet">
-        <Image src={RocketJet} alt="" />
-      </div>
-      <div className="relative lg:-top-100">
-        <div className="text-white font-bold text-center">
-          <h1 className="md:text-5xl text-3xl">Top 3 ranking</h1>
-        </div>
-      </div>
-      <div className="relative lg:-mt-72 lg:mb-56 ">
+      <article className="home-ranking">
+        <h1>Top 3 Ranking</h1>
         <Top3Card token={token} />
-      </div>
+      </article>
     </Layout>
   );
 };

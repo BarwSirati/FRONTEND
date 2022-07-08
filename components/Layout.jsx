@@ -4,7 +4,7 @@ const Layout = ({ children }) => {
   return (
     <Fragment>
       <Navbar />
-      <main className="flex-1 p-5 overflow-x-hidden layout">{children}</main>
+      <main className="layout">{children}</main>
     </Fragment>
   );
 };

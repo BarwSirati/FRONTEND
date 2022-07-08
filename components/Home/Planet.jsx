@@ -8,19 +8,19 @@ import Star from "../../public/pictures/Star.png";
 import Image from "next/image";
 const Planet = () => {
   const stars = [
-    { key: 1, alt: "Star1", className: "star01" },
-    { key: 2, alt: "Star2", className: "star02" },
-    { key: 3, alt: "Star3", className: "star03" },
-    { key: 4, alt: "Star4", className: "star04" },
-    { key: 5, alt: "Star5", className: "star05" },
-    { key: 6, alt: "Star6", className: "star06" },
-    { key: 7, alt: "Star7", className: "star07" },
-    { key: 8, alt: "Star8", className: "star08" },
-    { key: 9, alt: "Star9", className: "star09" },
-    { key: 10, alt: "Star10", className: "star10" },
+    { key: 1, alt: "Star1", className: "star-1" },
+    { key: 2, alt: "Star2", className: "star-2" },
+    { key: 3, alt: "Star3", className: "star-3" },
+    { key: 4, alt: "Star4", className: "star-4" },
+    { key: 5, alt: "Star5", className: "star-5" },
+    { key: 6, alt: "Star6", className: "star-6" },
+    { key: 7, alt: "Star7", className: "star-7" },
+    { key: 8, alt: "Star8", className: "star-8" },
+    { key: 9, alt: "Star9", className: "star-9" },
+    { key: 10, alt: "Star10", className: "star-10" },
   ];
   return (
-    <div className="relative">
+    <div className="home-planet">
       <div className="saturns">
         <Image src={Saturn} alt="Saturn" />
       </div>
@@ -41,8 +41,8 @@ const Planet = () => {
       </div>
       {stars.map((star) => {
         return (
-          <div key={star.key} className={`star  ${star.className}`}>
-            <Image src={Star} alt={star.alt} />
+          <div key={star.key} className={`stars ${star.className}`}>
+            <Image key={star.key} className="star" src={Star} alt={star.alt} />
           </div>
         );
       })}
