@@ -4,6 +4,7 @@ const Layout = ({ children }) => {
   return (
     <Fragment>
       <Navbar />
+      <div className="background-stars"></div>
       <main className="layout">{children}</main>
     </Fragment>
   );

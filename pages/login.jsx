@@ -59,7 +59,7 @@ const Login = () => {
   };
   return (
     <Fragment>
-      <div className="starLogin absolute z-10 flags{UCdzd2hhIFNvIEN1dGU=}"></div>
+      <div className="background-stars flags{UCdzd2hhIFNvIEN1dGU=}"></div>
       <div className="flex flex-col items-center justify-center min-h-screen px-4 space-y-8 z-20">
         <div className="flex space-x-4 font-bold">
           <h1 className="md:text-5xl text-4xl text-white pt-3">CEBOOSTUP</h1>
