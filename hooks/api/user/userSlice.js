@@ -6,15 +6,6 @@ export const userApi = createApi({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND}/users`,
   }),
   endpoints: (builder) => ({
-    getCurrent: builder.query({
-      query: (token) => ({
-        url: "/current/info",
-        method: "GET",
-        headers: {
-          Authorization: token,
-        },
-      }),
-    }),
     getTopRank: builder.query({
       query: (token) => ({
         url: "/score/ranking",
@@ -47,7 +38,6 @@ export const userApi = createApi({
 });
 
 export const {
-  useGetCurrentQuery,
   useGetRankingQuery,
   useGetTopRankQuery,
   useUpdateProfileMutation,
