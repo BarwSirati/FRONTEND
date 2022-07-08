@@ -150,9 +150,9 @@ const Submit = ({ token, user, questionId, submit }) => {
         <div className="submit-code">
           {(submit
             ? submit.status === true
-              ? <div className="ribbon green">Complete</div>
-              : <div className="ribbon orange">In Progress...</div>
-            : <div className="ribbon gray left-[15px] top-[15px]">Incomplete</div>
+              ? <div className="ribbon absolute green">Complete</div>
+              : <div className="ribbon absolute orange">In Progress...</div>
+            : <div className="ribbon absolute gray">Incomplete</div>
           )}
           <div className="header mt-[35px]">
             <div className="result">

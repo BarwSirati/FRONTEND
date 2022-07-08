@@ -665,7 +665,7 @@ select.search-input {
 }
 .loading-wrapper > div {
 	@apply flex flex-row w-full overflow-hidden;
-	@apply top-[30vh];
+	@apply top-[25vh];
 	position: absolute;
 }
 .loading-wrapper > div > div {
@@ -1437,7 +1437,6 @@ progress::-moz-progress-bar {
 .ribbon {
 	@apply text-white;
 	@apply font-semibold;
-	@apply left-[15px] top-[15px];
 	border-radius: 0 0.5em 0.5em 0;
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 	font-size: 2em;
@@ -1469,6 +1468,10 @@ progress::-moz-progress-bar {
 }
 .ribbon.gray {
 	@apply bg-gray-600;
+}
+.ribbon.absolute {
+	@apply left-[15px] top-[15px];
+	position: absolute;
 }
 
 /* Code Mirror */
