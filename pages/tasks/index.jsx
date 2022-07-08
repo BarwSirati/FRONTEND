@@ -230,7 +230,7 @@ const Tasks = ({ token, user }) => {
     <Loading />
   );
 };
-export const getServerSideProps = ({ req, res }) => {
+export const getServerSideProps = async ({ req, res }) => {
   const isAuth = getCookie("token", { req, res });
   if (!isAuth) {
     return {
@@ -242,7 +242,24 @@ export const getServerSideProps = ({ req, res }) => {
     };
   }
   const token = `Bearer ` + isAuth;
-  const user = jwtDecode(isAuth);
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_BACKEND}/users/current/info`,
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+  if (response.status !== 200) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login",
+      },
+      props: {},
+    };
+  }
+  const user = response.data;
   return { props: { token, user } };
 };
 export default Tasks;

@@ -4,7 +4,6 @@ import Loading from "../../components/Loading";
 import { setCredentials } from "../../hooks/api/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { getCookie } from "cookies-next";
-import { useGetCurrentQuery } from "../../hooks/api/user/userSlice";
 import { useGetQuestionQuery } from "../../hooks/api/question/questionSlice";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
@@ -14,12 +13,11 @@ import { useCompileCodeMutation } from "../../hooks/api/submit/compileSlice";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 
-const Submit = ({ token, userId, questionId, submit }) => {
+const Submit = ({ token, user, questionId, submit }) => {
   const [compileCode] = useCompileCodeMutation();
-  const [sourceCode, setSourceCode] = useState();
+  const [sourceCode, setSourceCode] = useState(submit.sourceCode);
   const dispatch = useDispatch();
   const router = useRouter();
-  const getCurrentQuery = useGetCurrentQuery(token);
   const [reload, setReload] = useState(false);
   const {
     data = {},
@@ -35,10 +33,10 @@ const Submit = ({ token, userId, questionId, submit }) => {
   }
 
   useEffect(() => {
-    if (getCurrentQuery.isSuccess) {
-      dispatch(setCredentials(getCurrentQuery.data));
+    if (user) {
+      dispatch(setCredentials(user));
     }
-  }, [dispatch, getCurrentQuery.data, getCurrentQuery.isSuccess]);
+  }, [dispatch, user]);
 
   let example = [];
   for (const key in data.ex_output) {
@@ -65,7 +63,6 @@ const Submit = ({ token, userId, questionId, submit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const body = {
-      userId: userId,
       questionId: questionId,
       sourceCode: sourceCode,
     };
@@ -219,10 +216,27 @@ export const getServerSideProps = async (context) => {
   }
 
   const token = `Bearer ` + isAuth;
-  const userId = jwtDecode(isAuth).id;
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_BACKEND}/users/current/info`,
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+  if (response.status !== 200) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login",
+      },
+      props: {},
+    };
+  }
+  const user = response.data;
   const questionId = context.query.id[0];
   const query = await axios.get(
-    `${process.env.NEXT_PUBLIC_BACKEND}/submit/${questionId}/${userId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND}/submit/${questionId}/${user.id}`,
     {
       headers: {
         Authorization: token,
@@ -230,6 +244,6 @@ export const getServerSideProps = async (context) => {
     }
   );
   const submit = query.data;
-  return { props: { token, userId, questionId, submit } };
+  return { props: { token, user, questionId, submit } };
 };
 export default Submit;
