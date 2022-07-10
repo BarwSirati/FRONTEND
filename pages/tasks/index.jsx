@@ -21,17 +21,16 @@ import axios from "axios";
 const Tasks = ({ token, user }) => {
   const { isSuccess, isFetching, data = [] } = useGetQuestionsQuery(token);
   const [questions, setQuestions] = useState([]);
-  const [complete, setComplete] = useState("all");
-  const [name, setName] = useState("");
-  const [unit, setUnit] = useState("");
 
-  const [search, setSearch] = useState(false);
   useEffect(() => {
-    if (isSuccess && complete == "all" && name == "") {
+    if (isSuccess) {
       setQuestions(data);
     }
-  }, [complete, data, isSuccess, name]);
-
+  }, [data, isSuccess]);
+  const [name, setName] = useState("");
+  const [unit, setUnit] = useState("");
+  const [complete, setComplete] = useState("");
+  const [search, setSearch] = useState(false);
   const [reset, setReset] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
   const questionsPerPage = 9;
@@ -81,12 +80,18 @@ const Tasks = ({ token, user }) => {
     });
   };
   if (search) {
-    const filter = data.filter(
-      (ques) =>
-        ques.title.toLowerCase().includes(name.toLowerCase()) &&
-        ques.unit.includes(unit) &&
-        ques.status.toString() == complete
+    let filter = data.filter((ques) =>
+      ques.title.toLowerCase().includes(name.toLowerCase())
     );
+
+    if (unit != "") {
+      filter = filter.filter((ques) => ques.unit.includes(unit));
+    }
+
+    if (complete != "") {
+      filter = filter.filter((ques) => ques.status.toString() == complete);
+    }
+
     setQuestions(filter);
     setSearch(false);
   }
@@ -163,7 +168,7 @@ const Tasks = ({ token, user }) => {
             onChange={filterComplete}
             onInput={handleClick}
           >
-            <option value="all">All Status</option>
+            <option value="">All Status</option>
             <option value="true">Complete</option>
             <option value="false">Incomplete</option>
           </select>
@@ -217,9 +222,8 @@ const Tasks = ({ token, user }) => {
                 resetAnimation();
               }}
               activeClassName={"active"}
-              renderOnZeroPageCount={() => {
-                return (<div className="task-paginate"><a>No search result :'(</a></div>)
-              }}
+              pageRangeDisplayed={2}
+              renderOnZeroPageCount={null}
               nextClassName={"task-paginate-arrow"}
               previousClassName={"task-paginate-arrow"}
             />
