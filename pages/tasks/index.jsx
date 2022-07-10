@@ -86,12 +86,13 @@ const Tasks = ({token, user}) => {
 
     setQuestions(filter);
     setSearch(false);
+    resetAnimation();
   }
   const renderStar = (rank) => {
     if(!rank) {
       return (
         <Fragment>
-          <FontAwesomeIcon icon={faMeteor} className="text-rose-500 text-3xl"/>
+          <FontAwesomeIcon icon={faMeteor} className="text-rose-500 text-xl lg:text-3xl"/>
         </Fragment>
       );
     }
@@ -102,7 +103,7 @@ const Tasks = ({token, user}) => {
           <FontAwesomeIcon
             key={i}
             icon={faStar}
-            className="text-yellow-400 text-3xl"
+            className="text-yellow-400 text-xl lg:text-3xl"
           />
         );
       }
@@ -115,7 +116,7 @@ const Tasks = ({token, user}) => {
           <FontAwesomeIcon
             key={i}
             icon={faMoon}
-            className="text-sky-500 text-3xl"
+            className="text-sky-500 text-xl lg:text-3xl"
           />
         );
       }
@@ -141,7 +142,6 @@ const Tasks = ({token, user}) => {
     else if(ques.status) return <div className="ribbon green">Complete</div>;
     else return <div className="ribbon gray">Incomplete</div>;
   };
-  console.log(questions)
   return (
     <Layout>
       <div className="task-wrapper">
@@ -195,49 +195,52 @@ const Tasks = ({token, user}) => {
             </div>
           )
           : (<div className="task-grid">
-            {displayQuestion.map((ques, key) => {
-              return (
-                <CustomLink key={key} href={`/tasks/${ques._id}`}>
-                  <div
-                    onClick={handleTaskCardClick}
-                    className={`task-card ${ques.status ? "complete" : ""}`}
-                  >
-                    {ribbonHandler(ques)}
-                    <div className="task-star">{renderStar(ques.rank)}</div>
-                    <div className="contain">
-                      <h2 className="head overflow-hidden text-ellipsis whitespace-pre">
-                        {ques.title}
-                      </h2>
-                      <p className="unit">{ques.unit}</p>
+            <div className="wrapper">
+              {displayQuestion.map((ques, key) => {
+                return (
+                  <CustomLink key={key} href={`/tasks/${ques._id}`}>
+                    <div
+                      onClick={handleTaskCardClick}
+                      className={`task-card ${ques.status ? "complete" : ""}`}
+                    >
+                      {ribbonHandler(ques)}
+                      <div className="task-star">{renderStar(ques.rank)}</div>
+                      <div className="contain">
+                        <h2 className="head overflow-hidden text-ellipsis md:whitespace-pre">
+                          {ques.title}
+                        </h2>
+                        <p className="unit">{ques.unit}</p>
+                      </div>
                     </div>
-                  </div>
-                </CustomLink>
-              )
-            })}
+                  </CustomLink>
+                )
+              })}
+            </div>
           </div>)
         }
-
-        {isSuccess && (
-          <div className="task-pagination">
-            <ReactPaginate
-              className="task-paginate"
-              pageClassName="task-paginate-item"
-              breakLabel="..."
-              previousLabel={<FontAwesomeIcon icon={faCaretLeft}/>}
-              nextLabel={<FontAwesomeIcon icon={faCaretRight}/>}
-              pageCount={Math.ceil(questions.length / questionsPerPage)}
-              onPageChange={({selected}) => {
-                setPageNumber(selected);
-                resetAnimation();
-              }}
-              activeClassName={"active"}
-              renderOnZeroPageCount={null}
-              nextClassName={"task-paginate-arrow"}
-              previousClassName={"task-paginate-arrow"}
-            />
-          </div>
-        )}
       </div>
+      {isSuccess && (
+        <div className="task-pagination">
+          <ReactPaginate
+            className="task-paginate"
+            pageClassName="task-paginate-item"
+            breakLabel="..."
+            previousLabel={<FontAwesomeIcon icon={faCaretLeft}/>}
+            nextLabel={<FontAwesomeIcon icon={faCaretRight}/>}
+            pageCount={Math.ceil(questions.length / questionsPerPage)}
+            onPageChange={({selected}) => {
+              setPageNumber(selected);
+              resetAnimation();
+            }}
+            pageRangeDisplayed={99999}
+            marginPagesDisplayed={99999}
+            activeClassName={"active"}
+            renderOnZeroPageCount={null}
+            nextClassName={"task-paginate-arrow"}
+            previousClassName={"task-paginate-arrow"}
+          />
+        </div>
+      )}
     </Layout>
   );
 };

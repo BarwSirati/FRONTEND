@@ -321,6 +321,8 @@ button, a, input {
 /* Tasks */
 .task-wrapper {
 	@apply lg:h-[calc(100vh-300px)];
+	@apply w-[min(1400px,100%)];
+	@apply mx-auto;
 }
 .task-search {
 	@apply flex md:space-x-4 md:space-y-0 space-y-3 p-2;
@@ -382,7 +384,10 @@ select.search-input > * {
 	@apply scrollable;
 	overflow-x: hidden;
 	@apply h-full lg:h-[calc(100vh-300px)];
-	@apply grid lg:grid-cols-3 lg:gap-4 pt-2 mt-3 lg:space-y-0 space-y-4 text-white;
+}
+.task-grid > .wrapper {
+	@apply h-full lg:h-[675px];
+	@apply grid lg:grid-cols-3 px-4 lg:grid-rows-3 lg:gap-4 py-2 mt-3 lg:space-y-0 space-y-4 text-white;
 	transition: all 300ms;
 }
 .task-grid-notfound {
@@ -406,8 +411,8 @@ select.search-input > * {
 	display: flex;
 	flex-direction: column;
 	@apply border-gray-700;
-	@apply gap-y-4;
-	height: 100%;
+	@apply gap-y-2 lg:gap-y-4;
+	@apply h-fit lg:h-[215px];
 	padding: 1em;
 	position: relative;
 	transform: translateY(0);
@@ -435,17 +440,18 @@ select.search-input > * {
 	align-self: flex-start;
 }
 .task-card h2 {
-	@apply prompt text-2xl font-semibold;
+	@apply prompt text-lg lg:text-2xl font-semibold;
 	@apply mb-2;
+	@apply pt-1;
 }
 .task-card p {
-	@apply prompt text-sm font-semibold text-slate-400;
+	@apply prompt pb-1 text-xs lg:text-sm font-semibold text-slate-400;
 }
 .task-card .task-star {
 	@apply flex;
+	@apply my-[0.5em] lg:mt-[1em] lg:mb-[0];
 	align-self: flex-end;
 	animation: appear 300ms;
-	margin-top: 1em;
 	transform-origin: right;
 }
 .task-card .task-star > * {
@@ -453,24 +459,20 @@ select.search-input > * {
 }
 
 .task-pagination {
-	@apply text-xl mt-3;
-	@apply relative lg:fixed;
-	@apply w-full flex justify-center;
+	@apply text-sm lg:text-xl mt-4 lg:mt-20;
+	@apply relative lg:fixed w-full;
+	@apply flex justify-center;
 	z-index: 20;
 }
 .task-paginate {
 	@apply bg-slate-800 py-6;
-	@apply flex gap-x-2 justify-center;
+	@apply w-[min(1400px,100%)] flex lg:gap-x-2 justify-center;
+	@apply lg:left-[-20px];
+	position: relative;
 	border-radius: 10px;
 }
-.task-paginate-null {
-	@apply bg-slate-800 py-6;
-	@apply w-full flex justify-center;
-	@apply text-center mitr;
-	z-index: 20;
-}
 .task-paginate-item > a {
-	@apply text-white py-4 px-8;
+	@apply text-white py-2 px-4 lg:py-4 lg:px-8;
 	@apply border-2 border-slate-700;
 	@apply bg-slate-700;
 	border-radius: 10px;
@@ -1588,11 +1590,10 @@ progress::-moz-progress-bar {
 .ribbon {
 	@apply text-white;
 	@apply font-semibold;
+	@apply text-xl lg:text-3xl py-1 lg:py-2 pr-8 pl-4;
 	border-radius: 0 0.5em 0.5em 0;
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-	font-size: 2em;
 	margin: 0.2em 0 0 -0.5em;
-	padding: 0 1em 0 0.5em;
 	position: absolute;
 	user-select: none;
 	z-index: 10;
@@ -1632,13 +1633,13 @@ progress::-moz-progress-bar {
 .cm-line {
 	@apply text-slate-200;
 }
-.ͼ13 { /* gray */
+.ͼ13, .ͼ6n { /* gray */
 	@apply text-slate-400;
 }
-.ͼv, .ͼr, .ͼp { /* red */
+.ͼv, .ͼr, .ͼp, .ͼ6f, .ͼ6b { /* red */
 	@apply text-rose-500;
 }
-.ͼq { /* green */
+.ͼq, .ͼ6e { /* green */
 	@apply text-amber-400;
 }
 .ͼu { /* white */

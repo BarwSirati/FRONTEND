@@ -1,12 +1,11 @@
+import {useDispatch} from "react-redux";
 import React, {useEffect} from "react";
+import {setCredentials} from "../hooks/api/auth/authSlice";
 import Layout from "../components/Layout";
 import {getCookie} from "cookies-next";
-import {useDispatch} from "react-redux";
-import {setCredentials} from "../hooks/api/auth/authSlice";
-import Table from "../components/Ranking/Table";
 import axios from "axios";
 
-const Ranking = ({token, user}) => {
+const Guide = ({token, user}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if(user) {
@@ -15,8 +14,8 @@ const Ranking = ({token, user}) => {
   }, [dispatch, user]);
   return (
     <Layout>
-      <div className="ranking">
-        <Table token={token}/>
+      <div>
+        Guide
       </div>
     </Layout>
   );
@@ -54,4 +53,5 @@ export const getServerSideProps = async({req, res}) => {
   const user = response.data;
   return {props: {token, user}};
 };
-export default Ranking;
+
+export default Guide;

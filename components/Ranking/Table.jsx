@@ -122,7 +122,7 @@ const Table = ({ token }) => {
                 <div className="text-2xl">
                   <ReactPaginate
                     className="flex space-x-10 justify-center"
-                    pageClassName="hover:text-warning"
+                    pageClassName="hover:text-warning shrink"
                     breakLabel="..."
                     previousLabel={<FontAwesomeIcon icon={faCaretLeft} />}
                     nextLabel={<FontAwesomeIcon icon={faCaretRight} />}
@@ -133,8 +133,8 @@ const Table = ({ token }) => {
                     activeClassName={"text-warning"}
                     pageRangeDisplayed={2}
                     renderOnZeroPageCount={null}
-                    nextClassName={"hover:text-warning"}
-                    previousClassName={"hover:text-warning"}
+                    nextClassName={"hover:text-warning grow"}
+                    previousClassName={"hover:text-warning grow"}
                   />
                 </div>
               )}
