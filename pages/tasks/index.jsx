@@ -1,25 +1,18 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { getCookie } from "cookies-next";
-import Loading from "../../components/Loading";
+import React, {Fragment, useEffect, useState} from "react";
+import {getCookie} from "cookies-next";
+import Redirecting from "../../components/Redirecting";
 import Layout from "../../components/Layout";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "../../hooks/api/auth/authSlice";
-import { useGetQuestionsQuery } from "../../hooks/api/question/questionSlice";
-import jwtDecode from "jwt-decode";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faStar,
-  faMoon,
-  faMeteor,
-  faCaretRight,
-  faCaretLeft,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import {useDispatch} from "react-redux";
+import {setCredentials} from "../../hooks/api/auth/authSlice";
+import {useGetQuestionsQuery} from "../../hooks/api/question/questionSlice";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCaretLeft, faCaretRight, faMeteor, faMoon, faSearch, faStar,} from "@fortawesome/free-solid-svg-icons";
 import ReactPaginate from "react-paginate";
 import Link from "next/link";
 import axios from "axios";
-const Tasks = ({ token, user }) => {
-  const { isSuccess, isFetching, data = [] } = useGetQuestionsQuery(token);
+
+const Tasks = ({token, user}) => {
+  const {isSuccess, isFetching, data = []} = useGetQuestionsQuery(token);
   const [questions, setQuestions] = useState([]);
   const [complete, setComplete] = useState("all");
   const [name, setName] = useState("");
@@ -27,7 +20,7 @@ const Tasks = ({ token, user }) => {
 
   const [search, setSearch] = useState(false);
   useEffect(() => {
-    if (isSuccess && complete == "all" && name == "") {
+    if(isSuccess && complete == "all" && name == "") {
       setQuestions(data);
     }
   }, [complete, data, isSuccess, name]);
@@ -43,23 +36,23 @@ const Tasks = ({ token, user }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (user) {
+    if(user) {
       dispatch(setCredentials(user));
     }
   }, [dispatch, user]);
-  const searchName = async (e) => {
+  const searchName = async(e) => {
     e.preventDefault();
     setName(e.target.value);
     setSearch(true);
     await resetAnimation();
   };
 
-  const filterUnit = async (e) => {
+  const filterUnit = async(e) => {
     e.preventDefault();
     setUnit(e.target.value);
     setSearch(true);
   };
-  const filterComplete = async (e) => {
+  const filterComplete = async(e) => {
     e.preventDefault();
     setComplete(e.target.value);
     setSearch(true);
@@ -80,26 +73,27 @@ const Tasks = ({ token, user }) => {
       element.style.animation = null;
     });
   };
-  if (search) {
+  if(search) {
     const filter = data.filter(
       (ques) =>
         ques.title.toLowerCase().includes(name.toLowerCase()) &&
         ques.unit.includes(unit) &&
-        ques.status.toString() == complete
+        ques.status.toString() === complete
     );
     setQuestions(filter);
     setSearch(false);
   }
   const renderStar = (rank) => {
-    if (!rank) {
+    if(!rank) {
       return (
         <Fragment>
-          <FontAwesomeIcon icon={faMeteor} className="text-rose-500 text-3xl" />
+          <FontAwesomeIcon icon={faMeteor} className="text-rose-500 text-3xl"/>
         </Fragment>
       );
-    } else if (rank < 4) {
+    }
+    else if(rank < 4) {
       let star = [];
-      for (let i = 0; i < rank; i++) {
+      for(let i = 0; i < rank; i++) {
         star.push(
           <FontAwesomeIcon
             key={i}
@@ -109,9 +103,10 @@ const Tasks = ({ token, user }) => {
         );
       }
       return star;
-    } else if (rank > 3) {
+    }
+    else if(rank > 3) {
       let star = [];
-      for (let i = 0; i < rank - 3; i++) {
+      for(let i = 0; i < rank - 3; i++) {
         star.push(
           <FontAwesomeIcon
             key={i}
@@ -132,14 +127,23 @@ const Tasks = ({ token, user }) => {
     event.currentTarget.offsetHeight;
     event.currentTarget.style.animation = null;
   };
+  const handleTaskCardClick = (event) => {
+    Redirecting.redirect();
+    event.currentTarget.classList.add("clicked");
+    event.currentTarget.style.animation = "none";
+    event.currentTarget.offsetHeight;
+    event.currentTarget.style.animation = null;
+  }
   const ribbonHandler = (ques) => {
-    if (ques.result !== "" && !ques.status) {
+    if(ques.result !== "" && !ques.status) {
       return <div className="ribbon orange">In Progress...</div>;
-    } else if (ques.status) return <div className="ribbon green">Complete</div>;
+    }
+    else if(ques.status) return <div className="ribbon green">Complete</div>;
     else return <div className="ribbon gray">Incomplete</div>;
   };
   return (
     <Layout>
+      <Redirecting/>
       <div className="task-wrapper">
         <div className="task-search">
           <select
@@ -187,7 +191,7 @@ const Tasks = ({ token, user }) => {
             return (
               <Link key={key} href={`/tasks/${ques._id}`}>
                 <div
-                  onClick={handleClick}
+                  onClick={handleTaskCardClick}
                   className={`task-card ${ques.status ? "complete" : ""}`}
                 >
                   {ribbonHandler(ques)}
@@ -209,10 +213,10 @@ const Tasks = ({ token, user }) => {
               className="task-paginate"
               pageClassName="task-paginate-item"
               breakLabel="..."
-              previousLabel={<FontAwesomeIcon icon={faCaretLeft} />}
-              nextLabel={<FontAwesomeIcon icon={faCaretRight} />}
+              previousLabel={<FontAwesomeIcon icon={faCaretLeft}/>}
+              nextLabel={<FontAwesomeIcon icon={faCaretRight}/>}
               pageCount={Math.ceil(questions.length / questionsPerPage)}
-              onPageChange={({ selected }) => {
+              onPageChange={({selected}) => {
                 setPageNumber(selected);
                 resetAnimation();
               }}
@@ -229,9 +233,9 @@ const Tasks = ({ token, user }) => {
     </Layout>
   );
 };
-export const getServerSideProps = async ({ req, res }) => {
-  const isAuth = getCookie("token", { req, res });
-  if (!isAuth) {
+export const getServerSideProps = async({req, res}) => {
+  const isAuth = getCookie("token", {req, res});
+  if(!isAuth) {
     return {
       redirect: {
         permanent: false,
@@ -249,7 +253,7 @@ export const getServerSideProps = async ({ req, res }) => {
       },
     }
   );
-  if (response.status !== 200) {
+  if(response.status !== 200) {
     return {
       redirect: {
         permanent: false,
@@ -259,6 +263,6 @@ export const getServerSideProps = async ({ req, res }) => {
     };
   }
   const user = response.data;
-  return { props: { token, user } };
+  return {props: {token, user}};
 };
 export default Tasks;

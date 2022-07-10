@@ -57,6 +57,33 @@ button, a, input {
 	position: relative;
 }
 
+/* Redirect Overlay */
+.redirecting-overlay {
+	@apply flex flex-row items-center justify-center w-screen h-screen z-20;
+	background-color: rgba(0, 0, 0, 0.6);
+	transition: all 10ms;
+	user-select: none;
+	left: 0;
+	top: 0;
+	position: fixed;
+	transform: translateY(-100%);
+	opacity: 0;
+	z-index: 10000;
+}
+.redirecting-overlay.active {
+	transform: translateX(0);
+}
+.redirecting-overlay.fade-in {
+	opacity: 1;
+}
+.redirecting-overlay .text {
+	@apply text-slate-400 mitr text-3xl;
+}
+.redirecting-overlay .text:after {
+	content: "";
+	animation: redirecting 1.5s infinite;
+}
+
 /* Navigation Bar */
 .navbar-wrapper {
 	z-index: 1000;
@@ -766,6 +793,17 @@ select.search-input > * {
 }
 
 /* Animation */
+@keyframes redirecting {
+	0% {
+		content: ".";
+	}
+	50% {
+		content: "..";
+	}
+	100% {
+		content: "...";
+	}
+}
 @keyframes appear {
 	0% {
 		transform: scaleX(0);
