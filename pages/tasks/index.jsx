@@ -244,8 +244,9 @@ const Tasks = ({ token, user }) => {
                 resetAnimation();
               }}
               activeClassName={"active"}
-              pageRangeDisplayed={2}
-              renderOnZeroPageCount={null}
+              renderOnZeroPageCount={() => {
+                return (<div className="task-paginate"><a>No search result :'(</a></div>)
+              }}
               nextClassName={"task-paginate-arrow"}
               previousClassName={"task-paginate-arrow"}
             />

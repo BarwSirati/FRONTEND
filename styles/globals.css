@@ -341,7 +341,7 @@ select.search-input > * {
 	@apply scrollable;
 	overflow-x: hidden;
 	@apply h-full lg:h-[calc(100vh-300px)];
-	@apply grid lg:grid-cols-3 lg:gap-4 mt-4 lg:space-y-0 space-y-4 text-white;
+	@apply grid lg:grid-cols-3 lg:gap-4 pt-2 mt-3 lg:space-y-0 space-y-4 text-white;
 	transition: all 300ms;
 }
 .task-card {
@@ -399,21 +399,24 @@ select.search-input > * {
 
 .task-pagination {
 	@apply text-xl mt-3;
-	@apply bg-slate-800 py-6;
 	@apply relative lg:fixed;
-	@apply w-full lg:w-screen;
-	border-radius: 10px;
+	@apply w-full flex justify-center;
 	z-index: 20;
 }
 .task-paginate {
+	@apply bg-slate-800 py-6;
 	@apply flex gap-x-2 justify-center;
+	border-radius: 10px;
+}
+.task-paginate-null {
+	@apply text-center mitr;
 }
 .task-paginate-item > a {
 	@apply text-white py-4 px-8;
 	@apply border-2 border-slate-700;
 	@apply bg-slate-700;
 	outline: none;
-	transition: all 200ms;
+	transition: all 100ms;
 	border-radius: 10px;
 }
 .task-paginate-item:not(.active) {
