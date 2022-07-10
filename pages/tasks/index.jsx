@@ -13,12 +13,13 @@ import {
   faMeteor,
   faCaretRight,
   faCaretLeft,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import ReactPaginate from "react-paginate";
 import Link from "next/link";
 import axios from "axios";
 const Tasks = ({ token, user }) => {
-  const { isSuccess, data = [] } = useGetQuestionsQuery(token);
+  const { isSuccess, isFetching, data = [] } = useGetQuestionsQuery(token);
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
@@ -30,13 +31,14 @@ const Tasks = ({ token, user }) => {
   const [unit, setUnit] = useState("");
   const [complete, setComplete] = useState("");
   const [search, setSearch] = useState(false);
+  const [reset, setReset] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
   const questionsPerPage = 9;
   const pagesVisited = pageNumber * questionsPerPage;
   const displayQuestion = questions.slice(
     pagesVisited,
-    pagesVisited + questionsPerPage
-  );
+    pagesVisited + questionsPerPage);
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (user) {
@@ -59,6 +61,22 @@ const Tasks = ({ token, user }) => {
     setComplete(e.target.value);
     setSearch(true);
   };
+
+  const resetAnimation = async () => {
+    const taskCards = document.querySelectorAll(".task-card");
+    const taskStars = document.querySelectorAll(".task-star");
+
+    taskCards.forEach(element => {
+      element.style.animation = "none";
+      element.offsetHeight;
+      element.style.animation = null;
+    });
+    taskStars.forEach(element => {
+      element.style.animation = "none";
+      element.offsetHeight;
+      element.style.animation = null;
+    });
+  }
 
   if (search) {
     if (name) {
@@ -103,7 +121,7 @@ const Tasks = ({ token, user }) => {
     if (!rank) {
       return (
         <Fragment>
-          <FontAwesomeIcon icon={faMeteor} className="text-rose-500 text-3xl" />
+          <FontAwesomeIcon icon={faMeteor} className="text-rose-500 text-3xl"/>
         </Fragment>
       );
     } else if (rank < 4) {
@@ -137,6 +155,9 @@ const Tasks = ({ token, user }) => {
 
   const handleClick = event => {
     event.currentTarget.classList.add('clicked');
+    event.currentTarget.style.animation = "none";
+    event.currentTarget.offsetHeight;
+    event.currentTarget.style.animation = null;
   };
   const ribbonHandler = (ques) => {
     if(ques.result !== "" && !ques.status) {
@@ -146,8 +167,7 @@ const Tasks = ({ token, user }) => {
     else
       return (<div className="ribbon gray">Incomplete</div>);
   }
-
-  return isSuccess ? (
+  return (
     <Layout>
       <div className="task-wrapper">
         <div className="task-search">
@@ -155,8 +175,9 @@ const Tasks = ({ token, user }) => {
             name="unit"
             className="search-input md:shrink"
             onChange={filterUnit}
+            onInput={handleClick}
           >
-            <option value="">All Unit</option>
+            <option value="">All Units</option>
             <option value="Basic I/O">Basic I/O</option>
             <option value="If-Else">If-Else</option>
             <option value="Loop">Loop</option>
@@ -169,19 +190,23 @@ const Tasks = ({ token, user }) => {
             name="complete"
             className="search-input md:shrink"
             onChange={filterComplete}
+            onInput={handleClick}
           >
-            <option value="">Status</option>
+            <option value="">All Status</option>
             <option value="true">Complete</option>
             <option value="false">Incomplete</option>
           </select>
-          <input
-              type="text"
-              name=""
-              id=""
-              className="search-input grow bai-jamjuree font-semibold"
-              placeholder="Search Name"
-              onChange={searchName}
-          />
+          <div className="grow">
+            <div className="search-icon"><FontAwesomeIcon icon={faSearch}></FontAwesomeIcon></div>
+            <input
+                type="text"
+                name=""
+                id=""
+                className="w-full search-input search bai-jamjuree font-semibold"
+                placeholder="Question Name"
+                onChange={searchName}
+            />
+          </div>
         </div>
 
         <div className="task-grid">
@@ -192,9 +217,9 @@ const Tasks = ({ token, user }) => {
                   className={`task-card ${ques.status ? "complete" : ""}`}
                 >
                   {ribbonHandler(ques)}
-                  <span className="star">
+                  <div className="task-star">
                     {renderStar(ques.rank)}
-                  </span>
+                  </div>
                   <div className="contain">
                     <h2 className="head overflow-hidden text-ellipsis whitespace-pre">{ques.title}</h2>
                     <p className="unit">{ques.unit}</p>
@@ -215,6 +240,7 @@ const Tasks = ({ token, user }) => {
               pageCount={Math.ceil(questions.length / questionsPerPage)}
               onPageChange={({ selected }) => {
                 setPageNumber(selected);
+                resetAnimation();
               }}
               activeClassName={"active"}
               pageRangeDisplayed={2}
@@ -226,8 +252,6 @@ const Tasks = ({ token, user }) => {
       )}
       </div>
     </Layout>
-  ) : (
-    <Loading />
   );
 };
 export const getServerSideProps = async ({ req, res }) => {

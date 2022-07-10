@@ -96,13 +96,7 @@ const Submit = ({ token, user, questionId, submit }) => {
               {isFetching ? "Loading..." : "by " + data.issuer}
             </span>
           </div>
-          <a
-            href={isFetching ? "" : data.pdfLink}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <h1 className="title">{isFetching ? "Loading..." : data.title}</h1>
-          </a>
+          <h1 className="title">{isFetching ? "Loading..." : data.title}</h1>
           <p className="detail">{isFetching ? "Loading..." : data.detail}</p>
           <div className="specification">
             <h2>Specification</h2>
@@ -131,7 +125,14 @@ const Submit = ({ token, user, questionId, submit }) => {
           ) : (
             ""
           )}
-
+          {data.note ? (
+              <div className="hint">
+                <h2>Hint</h2>
+                <p>{data.note}</p>
+              </div>
+          ) : (
+              ""
+          )}
           {data.image ? (
             <div className="image">
               <h2>Image</h2>
@@ -139,14 +140,6 @@ const Submit = ({ token, user, questionId, submit }) => {
               <div>
                 <Image src={data.image} width={200} height={200} alt="image" />
               </div>
-            </div>
-          ) : (
-            ""
-          )}
-          {data.note ? (
-            <div className="hint">
-              <h2>Hint : </h2>
-              <p>{data.note}</p>
             </div>
           ) : (
             ""
