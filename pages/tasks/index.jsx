@@ -21,23 +21,25 @@ import axios from "axios";
 const Tasks = ({ token, user }) => {
   const { isSuccess, isFetching, data = [] } = useGetQuestionsQuery(token);
   const [questions, setQuestions] = useState([]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      setQuestions(data);
-    }
-  }, [data, isSuccess]);
+  const [complete, setComplete] = useState("all");
   const [name, setName] = useState("");
   const [unit, setUnit] = useState("");
-  const [complete, setComplete] = useState("");
+
   const [search, setSearch] = useState(false);
+  useEffect(() => {
+    if (isSuccess && complete == "all" && name == "") {
+      setQuestions(data);
+    }
+  }, [complete, data, isSuccess, name]);
+
   const [reset, setReset] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
   const questionsPerPage = 9;
   const pagesVisited = pageNumber * questionsPerPage;
   const displayQuestion = questions.slice(
     pagesVisited,
-    pagesVisited + questionsPerPage);
+    pagesVisited + questionsPerPage
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -67,62 +69,32 @@ const Tasks = ({ token, user }) => {
     const taskCards = document.querySelectorAll(".task-card");
     const taskStars = document.querySelectorAll(".task-star");
 
-    taskCards.forEach(element => {
+    taskCards.forEach((element) => {
       element.style.animation = "none";
       element.offsetHeight;
       element.style.animation = null;
     });
-    taskStars.forEach(element => {
+    taskStars.forEach((element) => {
       element.style.animation = "none";
       element.offsetHeight;
       element.style.animation = null;
     });
-  }
-
+  };
   if (search) {
-    if (name) {
-      setQuestions(
-        data.filter((ques) =>
-          ques.title.toLowerCase().includes(name.toLowerCase())
-        )
-      );
-    } else {
-      let paramsData = {};
-      if (unit != "" && complete != "") {
-        paramsData = {
-          unit: unit,
-          complete: complete,
-        };
-      } else if (unit != "") {
-        paramsData = {
-          unit: unit,
-        };
-      } else if (complete != "") {
-        paramsData = {
-          complete: complete,
-        };
-      }
-      const query = async () => {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND}/question/search`,
-          {
-            params: paramsData,
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-        setQuestions(res.data);
-      };
-      query().then(() => resetAnimation());
-    }
+    const filter = data.filter(
+      (ques) =>
+        ques.title.toLowerCase().includes(name.toLowerCase()) &&
+        ques.unit.includes(unit) &&
+        ques.status.toString() == complete
+    );
+    setQuestions(filter);
     setSearch(false);
   }
   const renderStar = (rank) => {
     if (!rank) {
       return (
         <Fragment>
-          <FontAwesomeIcon icon={faMeteor} className="text-rose-500 text-3xl"/>
+          <FontAwesomeIcon icon={faMeteor} className="text-rose-500 text-3xl" />
         </Fragment>
       );
     } else if (rank < 4) {
@@ -154,20 +126,18 @@ const Tasks = ({ token, user }) => {
 
   const [isActive, setIsActive] = useState(false);
 
-  const handleClick = event => {
-    event.currentTarget.classList.add('clicked');
+  const handleClick = (event) => {
+    event.currentTarget.classList.add("clicked");
     event.currentTarget.style.animation = "none";
     event.currentTarget.offsetHeight;
     event.currentTarget.style.animation = null;
   };
   const ribbonHandler = (ques) => {
-    if(ques.result !== "" && !ques.status) {
-      return(<div className="ribbon orange">In Progress...</div>);
-    } else if(ques.status)
-      return (<div className="ribbon green">Complete</div>);
-    else
-      return (<div className="ribbon gray">Incomplete</div>);
-  }
+    if (ques.result !== "" && !ques.status) {
+      return <div className="ribbon orange">In Progress...</div>;
+    } else if (ques.status) return <div className="ribbon green">Complete</div>;
+    else return <div className="ribbon gray">Incomplete</div>;
+  };
   return (
     <Layout>
       <div className="task-wrapper">
@@ -193,19 +163,21 @@ const Tasks = ({ token, user }) => {
             onChange={filterComplete}
             onInput={handleClick}
           >
-            <option value="">All Status</option>
+            <option value="all">All Status</option>
             <option value="true">Complete</option>
             <option value="false">Incomplete</option>
           </select>
           <div className="grow">
-            <div className="search-icon"><FontAwesomeIcon icon={faSearch}></FontAwesomeIcon></div>
+            <div className="search-icon">
+              <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+            </div>
             <input
-                type="text"
-                name=""
-                id=""
-                className="w-full search-input search bai-jamjuree font-semibold"
-                placeholder="Question Name"
-                onChange={searchName}
+              type="text"
+              name=""
+              id=""
+              className="w-full search-input search bai-jamjuree font-semibold"
+              placeholder="Question Name"
+              onChange={searchName}
             />
           </div>
         </div>
@@ -214,15 +186,16 @@ const Tasks = ({ token, user }) => {
           {displayQuestion.map((ques, key) => {
             return (
               <Link key={key} href={`/tasks/${ques._id}`}>
-                <div onClick={handleClick}
+                <div
+                  onClick={handleClick}
                   className={`task-card ${ques.status ? "complete" : ""}`}
                 >
                   {ribbonHandler(ques)}
-                  <div className="task-star">
-                    {renderStar(ques.rank)}
-                  </div>
+                  <div className="task-star">{renderStar(ques.rank)}</div>
                   <div className="contain">
-                    <h2 className="head overflow-hidden text-ellipsis whitespace-pre">{ques.title}</h2>
+                    <h2 className="head overflow-hidden text-ellipsis whitespace-pre">
+                      {ques.title}
+                    </h2>
                     <p className="unit">{ques.unit}</p>
                   </div>
                 </div>
@@ -251,7 +224,7 @@ const Tasks = ({ token, user }) => {
               previousClassName={"task-paginate-arrow"}
             />
           </div>
-      )}
+        )}
       </div>
     </Layout>
   );
