@@ -182,7 +182,7 @@ const Submit = ({ token, user, questionId, submit }) => {
             <div className="code-editor">
               <CodeMirror
                 value={submit.sourceCode ? submit.sourceCode : ""}
-                extensions={[cpp(), globalCppCompletions]}
+                extensions={[cpp()]}
                 theme="dark"
                 className="whitespace-pre monospace bg-[#2A303C]"
                 placeholder={"Write your program..."}
