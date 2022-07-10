@@ -49,6 +49,7 @@ const Tasks = ({ token, user }) => {
     e.preventDefault();
     setName(e.target.value);
     setSearch(true);
+    await resetAnimation();
   };
 
   const filterUnit = async (e) => {
@@ -62,7 +63,7 @@ const Tasks = ({ token, user }) => {
     setSearch(true);
   };
 
-  const resetAnimation = async () => {
+  const resetAnimation = () => {
     const taskCards = document.querySelectorAll(".task-card");
     const taskStars = document.querySelectorAll(".task-star");
 
