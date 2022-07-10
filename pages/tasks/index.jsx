@@ -141,7 +141,6 @@ const Tasks = ({token, user}) => {
     else if(ques.status) return <div className="ribbon green">Complete</div>;
     else return <div className="ribbon gray">Incomplete</div>;
   };
-  console.log(questions)
   return (
     <Layout>
       <div className="task-wrapper">
