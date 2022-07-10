@@ -113,7 +113,7 @@ const Tasks = ({ token, user }) => {
         );
         setQuestions(res.data);
       };
-      query();
+      query().then(() => resetAnimation());
     }
     setSearch(false);
   }
