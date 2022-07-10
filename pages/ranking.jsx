@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import Layout from "../components/Layout";
-import { getCookie } from "cookies-next";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "../hooks/api/auth/authSlice";
+import {getCookie} from "cookies-next";
+import {useDispatch} from "react-redux";
+import {setCredentials} from "../hooks/api/auth/authSlice";
 import Table from "../components/Ranking/Table";
 import axios from "axios";
-const Ranking = ({ token, user }) => {
+
+const Ranking = ({token, user}) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (user) {
+    if(user) {
       dispatch(setCredentials(user));
     }
   }, [dispatch, user]);
@@ -19,14 +20,14 @@ const Ranking = ({ token, user }) => {
           Ranking
         </h1>
       </div>
-      <Table token={token} />
+      <Table token={token}/>
     </Layout>
   );
 };
 
-export const getServerSideProps = async ({ req, res }) => {
-  const isAuth = getCookie("token", { req, res });
-  if (!isAuth) {
+export const getServerSideProps = async({req, res}) => {
+  const isAuth = getCookie("token", {req, res});
+  if(!isAuth) {
     return {
       redirect: {
         permanent: false,
@@ -44,7 +45,7 @@ export const getServerSideProps = async ({ req, res }) => {
       },
     }
   );
-  if (response.status !== 200) {
+  if(response.status !== 200) {
     return {
       redirect: {
         permanent: false,
@@ -54,6 +55,6 @@ export const getServerSideProps = async ({ req, res }) => {
     };
   }
   const user = response.data;
-  return { props: { token, user } };
+  return {props: {token, user}};
 };
 export default Ranking;

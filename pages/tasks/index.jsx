@@ -1,30 +1,28 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {getCookie} from "cookies-next";
-import Redirecting from "../../components/Redirecting";
 import Layout from "../../components/Layout";
 import {useDispatch} from "react-redux";
 import {setCredentials} from "../../hooks/api/auth/authSlice";
 import {useGetQuestionsQuery} from "../../hooks/api/question/questionSlice";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCaretLeft, faCaretRight, faMeteor, faMoon, faSearch, faStar,} from "@fortawesome/free-solid-svg-icons";
+import {faCaretLeft, faCaretRight, faCircleExclamation, faMeteor, faMoon, faSearch, faStar} from "@fortawesome/free-solid-svg-icons";
 import ReactPaginate from "react-paginate";
-import Link from "next/link";
 import axios from "axios";
+import CustomLink from "../../components/CustomLink";
 
 const Tasks = ({token, user}) => {
   const {isSuccess, isFetching, data = []} = useGetQuestionsQuery(token);
   const [questions, setQuestions] = useState([]);
-  const [complete, setComplete] = useState("all");
-  const [name, setName] = useState("");
-  const [unit, setUnit] = useState("");
 
-  const [search, setSearch] = useState(false);
   useEffect(() => {
-    if(isSuccess && complete == "all" && name == "") {
+    if(isSuccess) {
       setQuestions(data);
     }
-  }, [complete, data, isSuccess, name]);
-
+  }, [data, isSuccess]);
+  const [name, setName] = useState("");
+  const [unit, setUnit] = useState("");
+  const [complete, setComplete] = useState("");
+  const [search, setSearch] = useState(false);
   const [reset, setReset] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
   const questionsPerPage = 9;
@@ -74,12 +72,18 @@ const Tasks = ({token, user}) => {
     });
   };
   if(search) {
-    const filter = data.filter(
-      (ques) =>
-        ques.title.toLowerCase().includes(name.toLowerCase()) &&
-        ques.unit.includes(unit) &&
-        ques.status.toString() === complete
+    let filter = data.filter((ques) =>
+      ques.title.toLowerCase().includes(name.toLowerCase())
     );
+
+    if(unit != "") {
+      filter = filter.filter((ques) => ques.unit.includes(unit));
+    }
+
+    if(complete != "") {
+      filter = filter.filter((ques) => ques.status.toString() == complete);
+    }
+
     setQuestions(filter);
     setSearch(false);
   }
@@ -128,11 +132,7 @@ const Tasks = ({token, user}) => {
     event.currentTarget.style.animation = null;
   };
   const handleTaskCardClick = (event) => {
-    Redirecting.redirect();
-    event.currentTarget.classList.add("clicked");
-    event.currentTarget.style.animation = "none";
-    event.currentTarget.offsetHeight;
-    event.currentTarget.style.animation = null;
+    handleClick(event);
   }
   const ribbonHandler = (ques) => {
     if(ques.result !== "" && !ques.status) {
@@ -141,9 +141,9 @@ const Tasks = ({token, user}) => {
     else if(ques.status) return <div className="ribbon green">Complete</div>;
     else return <div className="ribbon gray">Incomplete</div>;
   };
+  console.log(questions)
   return (
     <Layout>
-      <Redirecting/>
       <div className="task-wrapper">
         <div className="task-search">
           <select
@@ -167,7 +167,7 @@ const Tasks = ({token, user}) => {
             onChange={filterComplete}
             onInput={handleClick}
           >
-            <option value="all">All Status</option>
+            <option value="">All Status</option>
             <option value="true">Complete</option>
             <option value="false">Incomplete</option>
           </select>
@@ -186,27 +186,37 @@ const Tasks = ({token, user}) => {
           </div>
         </div>
 
-        <div className="task-grid">
-          {displayQuestion.map((ques, key) => {
-            return (
-              <Link key={key} href={`/tasks/${ques._id}`}>
-                <div
-                  onClick={handleTaskCardClick}
-                  className={`task-card ${ques.status ? "complete" : ""}`}
-                >
-                  {ribbonHandler(ques)}
-                  <div className="task-star">{renderStar(ques.rank)}</div>
-                  <div className="contain">
-                    <h2 className="head overflow-hidden text-ellipsis whitespace-pre">
-                      {ques.title}
-                    </h2>
-                    <p className="unit">{ques.unit}</p>
+        {(questions.length == 0 && !isFetching)
+          ? (<div className="task-grid-notfound">
+              <h1>
+                <FontAwesomeIcon icon={faCircleExclamation}></FontAwesomeIcon>
+                <div>Data not found :(</div>
+              </h1>
+            </div>
+          )
+          : (<div className="task-grid">
+            {displayQuestion.map((ques, key) => {
+              return (
+                <CustomLink key={key} href={`/tasks/${ques._id}`}>
+                  <div
+                    onClick={handleTaskCardClick}
+                    className={`task-card ${ques.status ? "complete" : ""}`}
+                  >
+                    {ribbonHandler(ques)}
+                    <div className="task-star">{renderStar(ques.rank)}</div>
+                    <div className="contain">
+                      <h2 className="head overflow-hidden text-ellipsis whitespace-pre">
+                        {ques.title}
+                      </h2>
+                      <p className="unit">{ques.unit}</p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+                </CustomLink>
+              )
+            })}
+          </div>)
+        }
+
         {isSuccess && (
           <div className="task-pagination">
             <ReactPaginate
@@ -221,9 +231,7 @@ const Tasks = ({token, user}) => {
                 resetAnimation();
               }}
               activeClassName={"active"}
-              renderOnZeroPageCount={() => {
-                return (<div className="task-paginate"><a>No search result :'(</a></div>)
-              }}
+              renderOnZeroPageCount={null}
               nextClassName={"task-paginate-arrow"}
               previousClassName={"task-paginate-arrow"}
             />

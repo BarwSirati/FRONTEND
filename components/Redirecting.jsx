@@ -1,12 +1,6 @@
 import React, {Fragment} from "react";
 
 const RedirectOverlay = (props) => {
-  const redirect = () => {
-    const taskCards = document.querySelectorAll(".redirecting-overlay");
-    taskCards.forEach((element) => {
-      element.classList.add('active');
-    });
-  };
   const handleTransition = event => {
     event.currentTarget.classList.add('fade-in');
   };

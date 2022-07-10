@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Layout from "../../components/Layout";
 import Loading from "../../components/Loading";
-import { setCredentials } from "../../hooks/api/auth/authSlice";
-import { useDispatch } from "react-redux";
-import { getCookie } from "cookies-next";
-import { useGetQuestionQuery } from "../../hooks/api/question/questionSlice";
-import { useRouter } from "next/dist/client/router";
+import {setCredentials} from "../../hooks/api/auth/authSlice";
+import {useDispatch} from "react-redux";
+import {getCookie} from "cookies-next";
+import {useGetQuestionQuery} from "../../hooks/api/question/questionSlice";
+import {useRouter} from "next/dist/client/router";
 import Image from "next/image";
 import CodeMirror from "@uiw/react-codemirror";
-import { cpp } from "@codemirror/lang-cpp";
-import { useCompileCodeMutation } from "../../hooks/api/submit/compileSlice";
+import {cpp} from "@codemirror/lang-cpp";
+import {useCompileCodeMutation} from "../../hooks/api/submit/compileSlice";
 import axios from "axios";
+import CustomLink from "../../components/CustomLink";
 
-const Submit = ({ token, user, questionId, submit }) => {
+const Submit = ({token, user, questionId, submit}) => {
   const [compileCode] = useCompileCodeMutation();
   const [sourceCode, setSourceCode] = useState(submit.sourceCode);
   const dispatch = useDispatch();
@@ -27,19 +28,19 @@ const Submit = ({ token, user, questionId, submit }) => {
     questionId: questionId,
   });
 
-  if (isError) {
+  if(isError) {
     router.push("/404");
   }
 
   useEffect(() => {
-    if (user) {
+    if(user) {
       dispatch(setCredentials(user));
     }
   }, [dispatch, user]);
 
   let example = [];
-  for (const key in data.ex_output) {
-    if (data.ex_output[key]) {
+  for(const key in data.ex_output) {
+    if(data.ex_output[key]) {
       example.push(
         <div key={key} className="wrapper">
           <h3>Case {Number(key) + 1}</h3>
@@ -50,7 +51,7 @@ const Submit = ({ token, user, questionId, submit }) => {
               </h4>
               <p>{data.ex_input[key] ? data.ex_input[key] : ""}</p>
             </div>
-            <hr />
+            <hr/>
             <div className="output">
               <h4>
                 <div>Output</div>
@@ -63,18 +64,57 @@ const Submit = ({ token, user, questionId, submit }) => {
     }
   }
 
-  const handleSubmit = async (e) => {
+  const getHelp = (chr) => {
+    switch(chr) {
+      case 'C':
+        return "Create file fail ❌";
+      case 'L':
+        return "Library is banned 😝";
+      case 'S':
+        return "Syntax error ❌";
+      case 'F':
+        return "Function is banned 😝";
+      case 'W':
+        return "Testcase error ❌";
+      case 'P':
+        return "Pass ✅";
+      case 'T':
+        return "Timeout 🕛";
+      case 'O':
+        return "Out of buffer ❌";
+      case 'R':
+        return "Runtime error ❌";
+      case '-':
+        return "Not pass 💥";
+      case 'E':
+        return "Error ❌";
+      default:
+        return "WTF ?!?";
+    }
+  }
+  const generateResult = (result) => {
+    let ret = [];
+    [...result].forEach((chr) => {
+      ret.push(<span className={`result tooltip tooltip-bottom ${chr == 'P' && "green"}`} data-tip={getHelp(chr)}><span className={`monospace text-lg ${chr == 'P' && "text-green-400"}`}>{chr}</span></span>);
+    })
+    return ret;
+  }
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    if (!sourceCode) {
+      return;
+    }
     const body = {
       questionId: questionId,
       sourceCode: sourceCode,
     };
-    await compileCode({ token: token, data: body });
+    await compileCode({token: token, data: body});
     setReload(true);
   };
   const [count, setCount] = useState(2);
   useEffect(() => {
-    if (reload) {
+    if(reload) {
       const interval = setInterval(() => {
         setCount((currentCount) => --currentCount);
       }, 1000);
@@ -85,13 +125,11 @@ const Submit = ({ token, user, questionId, submit }) => {
   }, [count, reload, router]);
   return (
     <Layout>
-      <Loading className={reload ? "active" : ""} />
+      <Loading className={reload ? "active" : ""}/>
       <div className="submit-wrapper">
         <div className="submit-problem">
           <div className="head">
-            <button type="button" onClick={() => router.back()}>
-              BACK
-            </button>
+            <CustomLink href="/tasks">BACK</CustomLink>
             <span className="author">
               {isFetching ? "Loading..." : "by " + data.issuer}
             </span>
@@ -126,19 +164,19 @@ const Submit = ({ token, user, questionId, submit }) => {
             ""
           )}
           {data.note ? (
-              <div className="hint">
-                <h2>Hint</h2>
-                <p>{data.note}</p>
-              </div>
+            <div className="hint">
+              <h2>Hint</h2>
+              <p>{data.note}</p>
+            </div>
           ) : (
-              ""
+            ""
           )}
           {data.image ? (
             <div className="image">
               <h2>Image</h2>
-              <br />
+              <br/>
               <div>
-                <Image src={data.image} width={200} height={200} alt="image" />
+                <Image src={data.image} width={200} height={200} alt="image"/>
               </div>
             </div>
           ) : (
@@ -159,11 +197,11 @@ const Submit = ({ token, user, questionId, submit }) => {
             <div className="result">
               <h1>RESULT</h1>
               <p
-                className={`${
+                className={`result-wrapper ${
                   submit ? (submit.status === true ? "success" : "failed") : ""
                 }`}
               >
-                {submit.result ? submit.result : "-"}
+                {submit.result ? generateResult(submit.result) : "-"}
               </p>
             </div>
             <div className="finish">
@@ -189,7 +227,7 @@ const Submit = ({ token, user, questionId, submit }) => {
             </div>
 
             <div className="code-submit">
-              <button type="submit">SUBMIT</button>
+              <button type="submit" className={!sourceCode ? "disabled" : ""}>SUBMIT</button>
             </div>
           </form>
         </div>
@@ -197,10 +235,10 @@ const Submit = ({ token, user, questionId, submit }) => {
     </Layout>
   );
 };
-export const getServerSideProps = async (context) => {
+export const getServerSideProps = async(context) => {
   const isAuth = getCookie("token", context);
 
-  if (!isAuth) {
+  if(!isAuth) {
     return {
       redirect: {
         permanent: false,
@@ -219,7 +257,7 @@ export const getServerSideProps = async (context) => {
       },
     }
   );
-  if (response.status !== 200) {
+  if(response.status !== 200) {
     return {
       redirect: {
         permanent: false,
@@ -239,6 +277,6 @@ export const getServerSideProps = async (context) => {
     }
   );
   const submit = query.data;
-  return { props: { token, user, questionId, submit } };
+  return {props: {token, user, questionId, submit}};
 };
 export default Submit;

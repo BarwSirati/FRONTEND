@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useRouter } from "next/dist/client/router";
-import Link from "next/link";
-import { deleteCookie } from "cookies-next";
+import React, {useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBars, faXmark} from "@fortawesome/free-solid-svg-icons";
+import {useRouter} from "next/dist/client/router";
+import CustomLink from "./CustomLink";
+import {deleteCookie} from "cookies-next";
+
 const path = [
-  { key: 1, name: "HOME", to: "/", class: "nav-menu" },
-  { key: 2, name: "TASKS", to: "/tasks", class: "nav-menu" },
-  { key: 3, name: "RANKING", to: "/ranking", class: "nav-menu" },
-  { key: 4, name: "PROFILE", to: "/profile", class: "nav-menu" },
-  { key: 5, name: "GUIDE", to: "/guide", class: "nav-menu" },
+  {key: 1, name: "HOME", to: "/", class: "nav-menu"},
+  {key: 2, name: "TASKS", to: "/tasks", class: "nav-menu"},
+  {key: 3, name: "RANKING", to: "/ranking", class: "nav-menu"},
+  {key: 4, name: "PROFILE", to: "/profile", class: "nav-menu"},
+  {key: 5, name: "GUIDE", to: "/guide", class: "nav-menu"},
 ];
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,7 @@ const Navbar = () => {
           <ul className="navbar-menu-wrapper">
             {path.map((link) => {
               return (
-                <Link key={link.key} href={link.to}>
+                <CustomLink key={link.key} href={link.to}>
                   <li
                     className={`navbar-menu-item ${
                       router.asPath === link.to ||
@@ -38,9 +39,9 @@ const Navbar = () => {
                         : ""
                     }`}
                   >
-                    <a>{link.name}</a>
+                    {link.name}
                   </li>
-                </Link>
+                </CustomLink>
               );
             })}
             <li
@@ -75,7 +76,7 @@ const Navbar = () => {
         <ul>
           {path.map((link) => {
             return (
-              <Link key={link.key} href={link.to}>
+              <CustomLink key={link.key} href={link.to}>
                 <li
                   key={link.key}
                   className={`navbar-menu-mobile-item ${
@@ -84,7 +85,7 @@ const Navbar = () => {
                 >
                   <span>{link.name}</span>
                 </li>
-              </Link>
+              </CustomLink>
             );
           })}
           <li

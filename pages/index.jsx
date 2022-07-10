@@ -1,18 +1,17 @@
-import React, { useEffect } from "react";
-import { getCookie } from "cookies-next";
+import React, {useEffect} from "react";
+import {getCookie} from "cookies-next";
 import Layout from "../components/Layout";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "../hooks/api/auth/authSlice";
-import jwtDecode from "jwt-decode";
+import {useDispatch} from "react-redux";
+import {setCredentials} from "../hooks/api/auth/authSlice";
 import Planet from "../components/Home/Planet";
-import Link from "next/link";
 import Top3Card from "../components/Home/Top3Card";
 import axios from "axios";
+import CustomLink from "../components/CustomLink";
 
-const Home = ({ token, user }) => {
+const Home = ({token, user}) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (user) {
+    if(user) {
       dispatch(setCredentials(user));
     }
   }, [dispatch, user]);
@@ -22,25 +21,23 @@ const Home = ({ token, user }) => {
         <h1>
           <div className="practice">Practice C Programing</div>
           <div className="week">In 1 Week</div>
-          <Link href="/tasks">
-            <button className="border-2 btn btn-outline btn-success">
-              GET START
-            </button>
-          </Link>
         </h1>
+        <CustomLink href="/tasks">
+          GET START
+        </CustomLink>
       </article>
-      <Planet />
+      <Planet/>
       <article className="home-ranking">
         <h1>Top 3 Ranking</h1>
-        <Top3Card token={token} />
+        <Top3Card token={token}/>
       </article>
     </Layout>
   );
 };
 
-export const getServerSideProps = async ({ req, res }) => {
-  const isAuth = getCookie("token", { req, res });
-  if (!isAuth) {
+export const getServerSideProps = async({req, res}) => {
+  const isAuth = getCookie("token", {req, res});
+  if(!isAuth) {
     return {
       redirect: {
         permanent: false,
@@ -58,7 +55,7 @@ export const getServerSideProps = async ({ req, res }) => {
       },
     }
   );
-  if (response.status !== 200) {
+  if(response.status !== 200) {
     return {
       redirect: {
         permanent: false,
@@ -68,7 +65,7 @@ export const getServerSideProps = async ({ req, res }) => {
     };
   }
   const user = response.data;
-  return { props: { token, user } };
+  return {props: {token, user}};
 };
 
 export default Home;

@@ -1,11 +1,16 @@
-import { Fragment } from "react";
+import {Fragment} from "react";
 import Navbar from "./Navbar";
-const Layout = ({ children }) => {
+import Redirecting from "./Redirecting";
+
+const Layout = ({children}) => {
   return (
     <Fragment>
-      <Navbar />
+      <Navbar/>
       <div className="background-stars"></div>
-      <main className="layout">{children}</main>
+      <main className="layout">
+        <Redirecting/>
+        {children}
+      </main>
     </Fragment>
   );
 };

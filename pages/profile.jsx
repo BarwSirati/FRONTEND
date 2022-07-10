@@ -1,25 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Layout from "../components/Layout";
-import { getCookie } from "cookies-next";
-import { useDispatch } from "react-redux";
+import {deleteCookie, getCookie} from "cookies-next";
+import {useDispatch} from "react-redux";
 import axios from "axios";
-import { setCredentials } from "../hooks/api/auth/authSlice";
-import { deleteCookie } from "cookies-next";
+import {setCredentials} from "../hooks/api/auth/authSlice";
 import ProgressBar from "../components/Profile/ProgressBar";
 import PlanetImageSwitch from "../components/PlanetImageSwitch";
 import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEdit,
-  faSave,
-  faXmark,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEdit, faSave, faUser, faXmark,} from "@fortawesome/free-solid-svg-icons";
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useUpdateProfileMutation } from "../hooks/api/user/userSlice";
-import { useRouter } from "next/dist/client/router";
+import {useUpdateProfileMutation} from "../hooks/api/user/userSlice";
+import {useRouter} from "next/dist/client/router";
 
 const schema = yup.object({
   username: yup.string(),
@@ -27,7 +21,7 @@ const schema = yup.object({
   password: yup.string(),
 });
 
-const Profile = ({ token, user }) => {
+const Profile = ({token, user}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const [updateProfile] = useUpdateProfileMutation();
@@ -40,31 +34,31 @@ const Profile = ({ token, user }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = async (payload = {}) => {
-    for (const key in payload) {
-      if (payload[key] === "") {
+  const onSubmit = async(payload = {}) => {
+    for(const key in payload) {
+      if(payload[key] === "") {
         delete payload[key];
       }
     }
     setIsOpen(false);
-    if (Object.keys(payload).length > 0) {
+    if(Object.keys(payload).length > 0) {
       const query = await updateProfile({
         token: token,
         data: payload,
         id: user.id,
       });
-      if (query.data !== "") {
+      if(query.data !== "") {
         setReload(true);
       }
     }
   };
   const [count, setCount] = useState(1);
   useEffect(() => {
-    if (reload) {
+    if(reload) {
       const interval = setInterval(() => {
         setCount((currentCount) => --currentCount);
       }, 1000);
@@ -92,19 +86,19 @@ const Profile = ({ token, user }) => {
                   user.group === 5 ? "md:w-96 my-3" : "w-48"
                 }  mx-auto`}
               >
-                <Image src={PlanetImageSwitch(user.group)} alt="profile" />
+                <Image src={PlanetImageSwitch(user.group)} alt="profile"/>
               </figure>
 
               <div className="flex p-5">
                 <div className="w-1/2">
                   <h2 className="text-xl">Username</h2>
-                  <br />
+                  <br/>
 
                   {user.username}
                 </div>
                 <div className="w-1/2">
                   <h2 className="text-xl">NickName</h2>
-                  <br />
+                  <br/>
                   {user.name}
                 </div>
               </div>
@@ -113,7 +107,7 @@ const Profile = ({ token, user }) => {
                   className="btn btn-outline px-20"
                   onClick={() => setIsOpen(true)}
                 >
-                  <FontAwesomeIcon icon={faEdit} /> &nbsp; EDIT
+                  <FontAwesomeIcon icon={faEdit}/> &nbsp; EDIT
                 </button>
               </div>
             </div>
@@ -142,7 +136,7 @@ const Profile = ({ token, user }) => {
                 </div>
                 <div className="p-6 space-y-6">
                   <h2 className="text-3xl">{user.progress}/100</h2>
-                  <ProgressBar value={user.progress} />
+                  <ProgressBar value={user.progress}/>
                 </div>
               </div>
             </div>
@@ -153,7 +147,7 @@ const Profile = ({ token, user }) => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="modal-box">
                 <h3 className="font-bold text-2xl text-center text-white">
-                  <FontAwesomeIcon icon={faUser} /> &nbsp; Your Profile
+                  <FontAwesomeIcon icon={faUser}/> &nbsp; Your Profile
                 </h3>
                 <div className="mt-5 space-y-5">
                   <input
@@ -183,7 +177,7 @@ const Profile = ({ token, user }) => {
                       className="btn btn-warning"
                       htmlFor="my-modal"
                     >
-                      <FontAwesomeIcon icon={faSave} className="text-xl" />
+                      <FontAwesomeIcon icon={faSave} className="text-xl"/>
                       &nbsp; Save
                     </button>
                     <button
@@ -191,7 +185,7 @@ const Profile = ({ token, user }) => {
                       className="btn btn-error"
                       onClick={() => setIsOpen(false)}
                     >
-                      <FontAwesomeIcon icon={faXmark} className="text-xl" />
+                      <FontAwesomeIcon icon={faXmark} className="text-xl"/>
                       &nbsp; Close
                     </button>
                   </div>
@@ -205,9 +199,9 @@ const Profile = ({ token, user }) => {
   );
 };
 
-export const getServerSideProps = async ({ req, res }) => {
-  const isAuth = getCookie("token", { req, res });
-  if (!isAuth) {
+export const getServerSideProps = async({req, res}) => {
+  const isAuth = getCookie("token", {req, res});
+  if(!isAuth) {
     return {
       redirect: {
         permanent: false,
@@ -225,7 +219,7 @@ export const getServerSideProps = async ({ req, res }) => {
       },
     }
   );
-  if (response.status !== 200) {
+  if(response.status !== 200) {
     deleteCookie("token");
     return {
       redirect: {
@@ -236,7 +230,7 @@ export const getServerSideProps = async ({ req, res }) => {
     };
   }
   const user = response.data;
-  return { props: { token, user } };
+  return {props: {token, user}};
 };
 
 export default Profile;
