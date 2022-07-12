@@ -97,7 +97,7 @@ const Submit = ({token, user, questionId, submit}) => {
     [...result].forEach((chr) => {
       ret.push(<span className={`result tooltip tooltip-bottom`} data-tip={getHelp(chr)}><span className={`monospace text-lg ${chr == 'P' && "text-green-400"}`}>{chr}</span></span>);
     });
-    let pass = result.match(/P/g).length;
+    let pass = result.match(/P/g) == null ? 0 : result.match(/P/g).length;
     let all = result.length;
     ret.push(
       <span className={`monospace text-rose-500 ml-2 ${pass === all ? "text-green-500" : ""}`}>

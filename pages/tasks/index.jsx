@@ -23,7 +23,6 @@ const Tasks = ({token, user}) => {
   const [unit, setUnit] = useState("");
   const [complete, setComplete] = useState("");
   const [search, setSearch] = useState(false);
-  const [reset, setReset] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
   const questionsPerPage = 9;
   const pagesVisited = pageNumber * questionsPerPage;
@@ -124,8 +123,6 @@ const Tasks = ({token, user}) => {
     }
   };
 
-  const [isActive, setIsActive] = useState(false);
-
   const handleClick = (event) => {
     event.currentTarget.classList.add("clicked");
     event.currentTarget.style.animation = "none";
@@ -186,7 +183,7 @@ const Tasks = ({token, user}) => {
           </div>
         </div>
 
-        {(questions.length == 0 && !isFetching)
+        {(questions.length === 0 && !isFetching)
           ? (<div className="task-grid-notfound">
               <h1>
                 <FontAwesomeIcon icon={faCircleExclamation}></FontAwesomeIcon>
@@ -220,10 +217,10 @@ const Tasks = ({token, user}) => {
         }
       </div>
       {isSuccess && (
-        <div className="task-pagination">
+        <div className="pagination">
           <ReactPaginate
-            className="task-paginate"
-            pageClassName="task-paginate-item"
+            className="paginate"
+            pageClassName="paginate-item"
             breakLabel="..."
             previousLabel={<FontAwesomeIcon icon={faCaretLeft}/>}
             nextLabel={<FontAwesomeIcon icon={faCaretRight}/>}
@@ -236,8 +233,8 @@ const Tasks = ({token, user}) => {
             marginPagesDisplayed={99999}
             activeClassName={"active"}
             renderOnZeroPageCount={null}
-            nextClassName={"task-paginate-arrow"}
-            previousClassName={"task-paginate-arrow"}
+            nextClassName={"paginate-arrow"}
+            previousClassName={"paginate-arrow"}
           />
         </div>
       )}

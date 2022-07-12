@@ -458,46 +458,6 @@ select.search-input > * {
 	margin-left: 0.2em;
 }
 
-.task-pagination {
-	@apply text-sm lg:text-xl mt-4 lg:mt-20;
-	@apply relative lg:fixed w-full;
-	@apply flex justify-center;
-	z-index: 20;
-}
-.task-paginate {
-	@apply bg-slate-800 py-6;
-	@apply w-[min(1400px,100%)] flex lg:gap-x-2 justify-center;
-	@apply lg:left-[-20px];
-	position: relative;
-	border-radius: 10px;
-}
-.task-paginate-item > a {
-	@apply text-white py-2 px-4 lg:py-4 lg:px-8;
-	@apply border-2 border-slate-700;
-	@apply bg-slate-700;
-	border-radius: 10px;
-	outline: none;
-	transition: all 100ms;
-}
-.task-paginate-item:not(.active) {
-	@apply hidden md:block;
-}
-.task-paginate-item:not(.active) > a:hover {
-	@apply border-rose-500;
-}
-.task-paginate-item.active > a {
-	@apply bg-rose-500 border-rose-500;
-	cursor: default;
-}
-.task-paginate-arrow > a {
-	@apply text-white py-4 px-8;
-	border-radius: 10px;
-	outline: none;
-}
-.task-paginate-arrow > a:hover {
-	@apply border-rose-500;
-}
-
 /* Tasks */
 .submit-wrapper {
 	@apply lg:h-[calc(100vh-150px)];
@@ -1654,4 +1614,45 @@ progress::-moz-progress-bar {
 }
 .cm-line > .cm-selectionMatch > span {
 	@apply bg-sky-500 text-slate-900;
+}
+
+/* Pagination */
+.pagination {
+	@apply text-sm lg:text-xl mt-4 lg:mt-20;
+	@apply relative lg:fixed w-full;
+	@apply flex justify-center;
+	z-index: 20;
+}
+.paginate {
+	@apply bg-slate-800 py-6;
+	@apply w-[min(1400px,100%)] flex lg:gap-x-2 justify-center;
+	@apply lg:left-[-20px];
+	position: relative;
+	border-radius: 10px;
+}
+.paginate-item > a {
+	@apply text-white py-2 px-4 lg:py-4 lg:px-8;
+	@apply border-2 border-slate-700;
+	@apply bg-slate-700;
+	border-radius: 10px;
+	outline: none;
+	transition: all 100ms;
+}
+.paginate-item:not(.active) {
+	@apply hidden md:block;
+}
+.paginate-item:not(.active) > a:hover {
+	@apply border-rose-500;
+}
+.paginate-item.active > a {
+	@apply bg-rose-500 border-rose-500;
+	cursor: default;
+}
+.paginate-arrow > a {
+	@apply text-white py-4 px-8;
+	border-radius: 10px;
+	outline: none;
+}
+.paginate-arrow > a:hover {
+	@apply border-rose-500;
 }
