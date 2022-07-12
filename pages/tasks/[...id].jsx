@@ -67,42 +67,49 @@ const Submit = ({token, user, questionId, submit}) => {
   const getHelp = (chr) => {
     switch(chr) {
       case 'C':
-        return "Create file fail ❌";
+        return "Create File Error";
       case 'L':
-        return "Library is banned 😝";
-      case 'S':
-        return "Syntax error ❌";
+        return "Library is Banned";
       case 'F':
-        return "Function is banned 😝";
+        return "Function is Banned";
+      case 'S':
+        return "Syntax Error";
       case 'W':
-        return "Testcase error ❌";
+        return "Testcase Error";
       case 'P':
-        return "Pass ✅";
+        return "Pass";
       case 'T':
-        return "Timeout 🕛";
+        return "Timeout";
       case 'O':
-        return "Out of buffer ❌";
+        return "Out of Buffer";
       case 'R':
-        return "Runtime error ❌";
+        return "Runtime Error";
       case '-':
-        return "Not pass 💥";
+        return "Not pass.";
       case 'E':
-        return "Error ❌";
+        return "Error";
       default:
-        return "WTF ?!?";
+        return "N/A";
     }
   }
   const generateResult = (result) => {
     let ret = [];
     [...result].forEach((chr) => {
-      ret.push(<span className={`result tooltip tooltip-bottom ${chr == 'P' && "green"}`} data-tip={getHelp(chr)}><span className={`monospace text-lg ${chr == 'P' && "text-green-400"}`}>{chr}</span></span>);
-    })
+      ret.push(<span className={`result tooltip tooltip-bottom`} data-tip={getHelp(chr)}><span className={`monospace text-lg ${chr == 'P' && "text-green-400"}`}>{chr}</span></span>);
+    });
+    let pass = result.match(/P/g).length;
+    let all = result.length;
+    ret.push(
+      <span className={`monospace text-rose-500 ml-2 ${pass === all ? "text-green-500" : ""}`}>
+        [{pass}/{all}]
+      </span>
+    );
     return ret;
   }
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    if (!sourceCode) {
+    if(!sourceCode) {
       return;
     }
     const body = {
@@ -201,7 +208,7 @@ const Submit = ({token, user, questionId, submit}) => {
                   submit ? (submit.status === true ? "success" : "failed") : ""
                 }`}
               >
-                {submit.result ? generateResult(submit.result) : "-"}
+                {submit.result ? generateResult(submit.result) : "N/A"}
               </p>
             </div>
             <div className="finish">

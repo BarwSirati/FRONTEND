@@ -695,15 +695,19 @@ select.search-input > * {
 }
 .result.tooltip {
 	cursor: pointer;
+	border: 1px solid var(--dark);
+}
+.result.tooltip:hover {
+	@apply border border-slate-500;
 }
 .result.tooltip:before {
-	@apply mitr text-2xl text-rose-500;
-	@apply px-2 p-1 bg-gray-700 bg-opacity-50;
-	backdrop-filter: blur(4px);
+	@apply p-4 bg-slate-900 border border-slate-500;
+	@apply monospace text-2xl text-white;
+	@apply px-2 p-1 bg-slate-900;
+	border-radius: 0;
 	z-index: 9999;
-}
-.result.tooltip.green:before {
-	@apply text-green-500;
+	transform: scale(1);
+	transition: none;
 }
 
 .submit-code .code {
