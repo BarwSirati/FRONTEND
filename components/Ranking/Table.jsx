@@ -118,30 +118,31 @@ const Table = ({ token }) => {
         <tfoot>
           <tr>
             <th colSpan="5">
-              {isSuccess && (
-                <div className="text-2xl">
-                  <ReactPaginate
-                    className="flex space-x-10 justify-center"
-                    pageClassName="hover:text-warning shrink"
-                    breakLabel="..."
-                    previousLabel={<FontAwesomeIcon icon={faCaretLeft} />}
-                    nextLabel={<FontAwesomeIcon icon={faCaretRight} />}
-                    pageCount={Math.ceil(data.length / usersPerPage)}
-                    onPageChange={({ selected }) => {
-                      setPageNumber(selected);
-                    }}
-                    activeClassName={"text-warning"}
-                    pageRangeDisplayed={2}
-                    renderOnZeroPageCount={null}
-                    nextClassName={"hover:text-warning grow"}
-                    previousClassName={"hover:text-warning grow"}
-                  />
-                </div>
-              )}
             </th>
           </tr>
         </tfoot>
       </table>
+      {isSuccess && (
+        <div className="pagination">
+          <ReactPaginate
+            className="paginate"
+            pageClassName="paginate-item"
+            breakLabel="..."
+            previousLabel={<FontAwesomeIcon icon={faCaretLeft} />}
+            nextLabel={<FontAwesomeIcon icon={faCaretRight} />}
+            pageCount={Math.ceil(data.length / usersPerPage)}
+            onPageChange={({ selected }) => {
+              setPageNumber(selected);
+            }}
+            pageRangeDisplayed={99999}
+            marginPagesDisplayed={99999}
+            activeClassName={"active"}
+            renderOnZeroPageCount={null}
+            nextClassName={"paginate-arrow"}
+            previousClassName={"paginate-arrow"}
+          />
+        </div>
+      )}
     </div>
   );
 };
