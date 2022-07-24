@@ -5,10 +5,11 @@ import {useDispatch} from "react-redux";
 import {setCredentials} from "../../hooks/api/auth/authSlice";
 import {useGetQuestionsQuery} from "../../hooks/api/question/questionSlice";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCaretLeft, faCaretRight, faCircleExclamation, faMeteor, faMoon, faSearch, faStar} from "@fortawesome/free-solid-svg-icons";
+import {faCaretLeft, faCaretRight, faCircleExclamation, faMeteor, faSearch, faStar} from "@fortawesome/free-solid-svg-icons";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
 import CustomLink from "../../components/CustomLink";
+import * as regular from "@fortawesome/free-regular-svg-icons";
 
 const Tasks = ({token, user}) => {
   const {isSuccess, isFetching, data = []} = useGetQuestionsQuery(token);
@@ -91,35 +92,49 @@ const Tasks = ({token, user}) => {
     if(!rank) {
       return (
         <Fragment>
-          <FontAwesomeIcon icon={faMeteor} className="text-rose-500 text-xl lg:text-3xl"/>
+          <div className="tooltip tooltip-left result" data-tip="Extra task - No point">
+            <FontAwesomeIcon icon={regular.faStar} className="text-sky-400 text-xl lg:text-3xl"/>
+          </div>
         </Fragment>
       );
     }
     else if(rank < 4) {
-      let star = [];
-      for(let i = 0; i < rank; i++) {
-        star.push(
-          <FontAwesomeIcon
-            key={i}
-            icon={faStar}
-            className="text-yellow-400 text-xl lg:text-3xl"
-          />
-        );
-      }
-      return star;
+      let text;
+      if(rank === 1) text = "Baby - 100 points";
+      else if(rank === 2) text = "Easy - 200 points";
+      else text = "Normal - 300 points";
+
+      return (
+        <div className="tooltip tooltip-left result" data-tip={`${text}`}>
+          {[...Array(rank)].map(() => (
+              <FontAwesomeIcon
+                key={rank}
+                icon={faStar}
+                className="text-yellow-400 text-xl lg:text-3xl"
+              />
+            )
+          )}
+        </div>
+      );
     }
     else if(rank > 3) {
-      let star = [];
-      for(let i = 0; i < rank - 3; i++) {
-        star.push(
-          <FontAwesomeIcon
-            key={i}
-            icon={faMoon}
-            className="text-sky-500 text-xl lg:text-3xl"
-          />
-        );
-      }
-      return star;
+      let text;
+      if(rank === 4) text = "Hard - 400 points";
+      else if(rank === 5) text = "Extreme - 500 points";
+      else text = "God - 600 points";
+
+      return (
+        <div className="tooltip tooltip-left result" data-tip={`${text}`}>
+          {[...Array(rank - 3)].map(() => (
+              <FontAwesomeIcon
+                key={rank}
+                icon={faMeteor}
+                className="text-rose-500 text-xl lg:text-3xl"
+              />
+            )
+          )}
+        </div>
+      );
     }
   };
 
@@ -203,10 +218,10 @@ const Tasks = ({token, user}) => {
                       {ribbonHandler(ques)}
                       <div className="task-star">{renderStar(ques.rank)}</div>
                       <div className="contain">
-                        <h2 className="head overflow-hidden text-ellipsis md:whitespace-pre">
+                        <h2 className="head overflow-hidden text-ellipsis whitespace-pre">
                           {ques.title}
                         </h2>
-                        <p className="unit">{ques.unit}</p>
+                        <p className="unit overflow-hidden text-ellipsis whitespace-pre">{ques.unit}</p>
                       </div>
                     </div>
                   </CustomLink>

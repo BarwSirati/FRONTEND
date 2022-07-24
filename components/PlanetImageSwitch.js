@@ -6,17 +6,17 @@ import Pluto from "../public/pictures/planet/name/Pluto.png";
 import Saturn from "../public/pictures/planet/name/Saturn.png";
 
 const PlanetImageSwitch = (num) => {
-  if (num == 0) {
+  if (num === 0) {
     return Mercury;
-  } else if (num == 1) {
+  } else if (num === 1) {
     return Jupiter;
-  } else if (num == 2) {
+  } else if (num === 2) {
     return Mars;
-  } else if (num == 3) {
+  } else if (num === 3) {
     return Naptune;
-  } else if (num == 4) {
+  } else if (num === 4) {
     return Pluto;
-  } else if (num == 5) {
+  } else if (num === 5) {
     return Saturn;
   }
 };

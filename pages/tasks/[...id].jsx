@@ -85,7 +85,9 @@ const Submit = ({token, user, questionId, submit}) => {
       case 'R':
         return "Runtime Error";
       case '-':
-        return "Not pass.";
+        return "Not pass";
+      case 'H':
+        return "Hacker";
       case 'E':
         return "Error";
       default:

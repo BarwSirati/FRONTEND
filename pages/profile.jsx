@@ -4,11 +4,10 @@ import {deleteCookie, getCookie} from "cookies-next";
 import {useDispatch} from "react-redux";
 import axios from "axios";
 import {setCredentials} from "../hooks/api/auth/authSlice";
-import ProgressBar from "../components/Profile/ProgressBar";
 import PlanetImageSwitch from "../components/PlanetImageSwitch";
 import Image from "next/image";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEdit, faSave, faUser, faXmark,} from "@fortawesome/free-solid-svg-icons";
+import {faSave, faUser, faXmark,} from "@fortawesome/free-solid-svg-icons";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -40,7 +39,10 @@ const Profile = ({token, user}) => {
   });
   const onSubmit = async(payload = {}) => {
     for(const key in payload) {
-      if(payload[key] === "") {
+      const usernameDoesntChange = key === "username" && payload[key] === user.username;
+      const nicknameDoesntChange = key === "name" && payload[key] === user.name;
+      const fieldEmpty = payload[key] === "";
+      if(usernameDoesntChange || nicknameDoesntChange || fieldEmpty) {
         delete payload[key];
       }
     }
@@ -57,8 +59,15 @@ const Profile = ({token, user}) => {
     }
   };
   const [count, setCount] = useState(1);
+  const reloadPage = () => {
+    const taskCards = document.querySelectorAll(".redirecting-overlay");
+    taskCards.forEach((element) => {
+      element.classList.add('active');
+    });
+  };
   useEffect(() => {
     if(reload) {
+      reloadPage();
       const interval = setInterval(() => {
         setCount((currentCount) => --currentCount);
       }, 1000);
@@ -70,125 +79,116 @@ const Profile = ({token, user}) => {
   return (
     <>
       <Layout>
-        <div
-          className={`max-w-6xl md:flex flex-row mx-auto font-bold ${
-            reload ? "opacity-20" : ""
-          }`}
-        >
-          <div className="md:w-1/2 p-5 text-center text-white">
-            <div className="card w-full bg-[#2A303C] shadow-xl">
-              <div className="card-body bg-primary p-4 text-2xl">
-                <h2>Profile</h2>
-              </div>
+        <div className="profile-wrapper">
+          <div className="profile-half">
+            <div className="profile-card">
+              <div className="profile">
+                <h1>Profile</h1>
 
-              <figure
-                className={`${
-                  user.group === 5 ? "md:w-96 my-3" : "w-48"
-                }  mx-auto`}
-              >
-                <Image src={PlanetImageSwitch(user.group)} alt="profile"/>
-              </figure>
+                <figure className="mx-auto w-full">
+                  <Image src={PlanetImageSwitch(user.group)} alt="profile"/>
+                </figure>
 
-              <div className="flex p-5">
-                <div className="w-1/2">
-                  <h2 className="text-xl">Username</h2>
-                  <br/>
-
-                  {user.username}
-                </div>
-                <div className="w-1/2">
-                  <h2 className="text-xl">NickName</h2>
-                  <br/>
-                  {user.name}
+                <div className="username-wrapper">
+                  <div className="flex flex-row">
+                    <h2 className="head">Username</h2>
+                    <div className="content">
+                      {user.username}
+                    </div>
+                  </div>
+                  <div className="flex flex-row">
+                    <h2 className="head">Nickname</h2>
+                    <div className="content">
+                      {user.name}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="py-4">
-                <button
-                  className="btn btn-outline px-20"
-                  onClick={() => setIsOpen(true)}
-                >
-                  <FontAwesomeIcon icon={faEdit}/> &nbsp; EDIT
-                </button>
+              <div>
+                <button onClick={() => setIsOpen(true)}>EDIT PROFILE</button>
               </div>
             </div>
           </div>
-          <div className="md:w-1/2 p-5 text-center text-white">
-            <div className="flex-row md:space-y-16 space-y-10">
-              <div className="card w-full bg-[#2A303C] shadow-xl mx-auto">
-                <div className="card-body bg-primary p-4 text-2xl">
-                  <h2>Score</h2>
-                </div>
-                <div className="flex p-11">
-                  <div className="w-1/2 space-y-5 text-success">
-                    <h2 className="text-2xl">RANK</h2>
-                    <h2 className="text-3xl">{user.rank}</h2>
-                  </div>
-                  <div className="w-1/2 space-y-5 text-warning">
-                    <h2 className="text-2xl">SCORE</h2>
-                    <h2 className="text-3xl">{user.score}</h2>
-                  </div>
-                </div>
+          <div className="score-half">
+            <div className="rank-card">
+              <h1>Your Rank</h1>
+              <div className="w-full text-center prompt text-white text-[80px]">
+                {user.rank === "UNRANKED" ? (<div className="text-slate-500">N/A</div>) : (<div><span className="text-slate-500">#</span>{user.rank}</div>)}
               </div>
+            </div>
+            <div className="score-card">
+              <h1>Your Score</h1>
+              <div className="md:pt-4 w-full text-end prompt text-white text-4xl md:text-[80px]">
+                {user.score}.
+                <span className="text-slate-500 text-xl md:text-[40px]">00</span>
+              </div>
+            </div>
 
-              <div className="card w-full bg-[#2A303C] shadow-xl mx-auto">
-                <div className="card-body bg-primary p-4 text-2xl">
-                  <h2>Progress</h2>
-                </div>
-                <div className="p-6 space-y-6">
-                  <h2 className="text-3xl">{user.progress}/100</h2>
-                  <ProgressBar value={user.progress}/>
+            <div className="progress-card">
+              <h1>Progress</h1>
+              <div>
+                <div className="custom-progress">
+                  <div className="custom-progress-bar" style={{"--progress": Math.round(user.progress) + "%"}}></div>
+                  <div className="right-[10px] absolute text-end text-white text-xl prompt font-semibold">{Math.round(user.progress)}%</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div>
+        <div className="profile-modal">
           <div className={`modal ${isOpen ? "modal-open" : ""} transition-all`}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="modal-box">
-                <h3 className="font-bold text-2xl text-center text-white">
-                  <FontAwesomeIcon icon={faUser}/> &nbsp; Your Profile
-                </h3>
-                <div className="mt-5 space-y-5">
-                  <input
-                    type="text"
-                    placeholder="Change Username"
-                    name="username"
-                    className="input input-bordered w-full border-primary"
-                    {...register("username")}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Change Nickname"
-                    name="name"
-                    className="input input-bordered w-full border-primary"
-                    {...register("name")}
-                  />
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Change Password"
-                    className="input input-bordered w-full border-primary"
-                    {...register("password")}
-                  />
-                  <div className="w-full flex justify-center space-x-5">
-                    <button
-                      type="submit"
-                      className="btn btn-warning"
-                      htmlFor="my-modal"
-                    >
-                      <FontAwesomeIcon icon={faSave} className="text-xl"/>
-                      &nbsp; Save
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-error"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <FontAwesomeIcon icon={faXmark} className="text-xl"/>
-                      &nbsp; Close
-                    </button>
+              <div className="body mitr">
+                <h3>Edit Profile</h3>
+                <div className="profile-form">
+                  <div>
+                    <label>Username</label>
+                    <input
+                      type="text"
+                      placeholder="Username"
+                      name="username"
+                      defaultValue={user.username}
+                      autoComplete="off"
+                      {...register("username")}
+                    />
                   </div>
+                  <div>
+                    <label>Nickname</label>
+                    <input
+                      type="text"
+                      placeholder="Nickname"
+                      name="name"
+                      defaultValue={user.name}
+                      autoComplete="off"
+                      {...register("name")}
+                    />
+                  </div>
+                  <div>
+                    <label>Password</label>
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="New Password"
+                      autoComplete="new-password"
+                      {...register("password")}
+                    />
+                  </div>
+                </div>
+                <div className="button-wrapper">
+                  <button
+                    type="submit"
+                    className="save"
+                    htmlFor="my-modal"
+                  >
+                    <FontAwesomeIcon icon={faSave} className="text-xl mr-2 fa-fw"/>Save
+                  </button>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <FontAwesomeIcon icon={faXmark} className="text-xl mr-2 fa-fw"/>Close
+                  </button>
                 </div>
               </div>
             </form>

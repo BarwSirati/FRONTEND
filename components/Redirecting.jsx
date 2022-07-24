@@ -13,7 +13,7 @@ const RedirectOverlay = (props) => {
           <div></div>
           <div></div>
         </div>
-        <div className="text">Redirecting</div>
+        <div className="text">Loading</div>
       </div>
     </Fragment>
   );

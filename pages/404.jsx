@@ -6,7 +6,7 @@ const Custom404 = () => {
   return (
     <Fragment>
       <Starfall/>
-      <div className="starLogin absolute z-10"></div>
+      <div className="background-stars absolute z-10"></div>
       <div id="notfound" className="z-20">
         <div className="notfound">
           <div className="notfound-404">
@@ -14,7 +14,7 @@ const Custom404 = () => {
             <h2>Page not found</h2>
           </div>
           <CustomLink href={"/"}>
-            <button className="btn my-5 btn-outline btn-error">
+            <button className="btn border-2 text-xl btn-outline btn-error">
               Home Page
             </button>
           </CustomLink>

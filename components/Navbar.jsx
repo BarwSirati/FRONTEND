@@ -30,7 +30,7 @@ const Navbar = () => {
           <ul className="navbar-menu-wrapper">
             {path.map((link) => {
               return (
-                <CustomLink key={link.key} href={link.to}>
+                <CustomLink key={link.key} href={router.asPath === link.to ? "" : link.to}>
                   <li
                     className={`navbar-menu-item ${
                       router.asPath === link.to ||
