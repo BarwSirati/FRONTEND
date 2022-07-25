@@ -40,7 +40,6 @@ const Login = () => {
         `${process.env.NEXT_PUBLIC_BACKEND}/auth/user/login`,
         data
       );
-      console.log(res.status);
       if (res.status === 200) {
         const token = res.data.accessToken;
         setCookie("token", token, {

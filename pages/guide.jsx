@@ -80,7 +80,7 @@ const Guide = ({token, user}) => {
             <div className="text-xl text-white flex flex-row">
               <div>S : Syntax Error         </div>
               <div className="text-slate-500">
-                # syntax errors in the code. (did you forgot ';'?)
+                # syntax errors in the code. (did you forgot &#39;;&#39;?)
               </div>
             </div>
             <div className="text-xl text-white flex flex-row">
@@ -135,7 +135,7 @@ const Guide = ({token, user}) => {
         </div>
         <div className="mb-12">
           <h1>Textbook</h1>
-          <a target="_blank" className="textbook-link" href="https://bit.ly/bookceboostup">CE Boostup Textbook</a>
+          <a target="_blank" className="textbook-link" href="https://bit.ly/bookceboostup" rel="noreferrer">CE Boostup Textbook</a>
         </div>
       </div>
     </Layout>
