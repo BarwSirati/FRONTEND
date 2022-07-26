@@ -6,7 +6,10 @@ services:
     build: ./
     networks:
       - nginx
+    environment:
+      - VIRTUAL_HOST=ceboostup.kmitl.cloud
+      - VIRTUAL_PORT=3000
 networks:
   nginx:
-    name: nginx_bridge
+    name: nginx_network
     driver: bridge

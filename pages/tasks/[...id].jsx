@@ -221,7 +221,7 @@ const Submit = ({token, user, questionId, submit}) => {
           <form className="code" onSubmit={handleSubmit}>
             <div className="code-editor">
               <CodeMirror
-                value={submit.sourceCode ? submit.sourceCode : ""}
+                value={submit.sourceCode ? submit.sourceCode : "#include<stdio.h>\nint main() {\n \n return 0;\n}"}
                 extensions={[cpp()]}
                 theme="dark"
                 className="whitespace-pre monospace bg-[#2A303C]"
