@@ -104,16 +104,19 @@ const Tasks = ({token, user}) => {
       else if(rank === 2) text = "Easy - 200 points";
       else text = "Normal - 300 points";
 
+      let stars = [];
+      for(let i = 0; i < rank; i++)
+        stars.push(
+          <FontAwesomeIcon
+            key={i}
+            icon={faStar}
+            className="text-yellow-400 text-xl lg:text-3xl"
+          />
+        );
+
       return (
         <div className="tooltip tooltip-left result" data-tip={`${text}`}>
-          {[...Array(rank)].map(() => (
-              <FontAwesomeIcon
-                key={rank}
-                icon={faStar}
-                className="text-yellow-400 text-xl lg:text-3xl"
-              />
-            )
-          )}
+          {stars}
         </div>
       );
     }
@@ -123,16 +126,19 @@ const Tasks = ({token, user}) => {
       else if(rank === 5) text = "Extreme - 500 points";
       else text = "God - 600 points";
 
+      let stars = [];
+      for(let i = 0; i < rank - 3; i++)
+        stars.push(
+          <FontAwesomeIcon
+            key={i}
+            icon={faMeteor}
+            className="text-rose-500 text-xl lg:text-3xl"
+          />
+        );
+
       return (
         <div className="tooltip tooltip-left result" data-tip={`${text}`}>
-          {[...Array(rank - 3)].map(() => (
-              <FontAwesomeIcon
-                key={rank}
-                icon={faMeteor}
-                className="text-rose-500 text-xl lg:text-3xl"
-              />
-            )
-          )}
+          {stars}
         </div>
       );
     }
