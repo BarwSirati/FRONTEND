@@ -39,6 +39,7 @@ const Profile = ({token, user}) => {
   });
   const onSubmit = async(payload = {}) => {
     for(const key in payload) {
+      payload[key].substring(0, 32);
       const usernameDoesntChange = key === "username" && payload[key] === user.username;
       const nicknameDoesntChange = key === "name" && payload[key] === user.name;
       const fieldEmpty = payload[key] === "";
@@ -149,6 +150,7 @@ const Profile = ({token, user}) => {
                       name="username"
                       defaultValue={user.username}
                       autoComplete="off"
+                      maxLength="32"
                       {...register("username")}
                     />
                   </div>
@@ -160,6 +162,7 @@ const Profile = ({token, user}) => {
                       name="name"
                       defaultValue={user.name}
                       autoComplete="off"
+                      maxLength="32"
                       {...register("name")}
                     />
                   </div>
