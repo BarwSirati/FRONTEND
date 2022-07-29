@@ -4,6 +4,7 @@ import Mercury from "../public/pictures/planet/name/Mercury.png";
 import Naptune from "../public/pictures/planet/name/Naptune.png";
 import Pluto from "../public/pictures/planet/name/Pluto.png";
 import Saturn from "../public/pictures/planet/name/Saturn.png";
+import Blackhole from "../public/pictures/planet/name/blackhole.png"
 
 const PlanetImageSwitch = (num) => {
   if (num === 0) {
@@ -18,6 +19,8 @@ const PlanetImageSwitch = (num) => {
     return Pluto;
   } else if (num === 5) {
     return Saturn;
+  } else if (num === 6) {
+    return Blackhole;
   }
 };
 
