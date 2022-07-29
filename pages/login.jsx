@@ -83,7 +83,6 @@ const Login = () => {
                   type="text"
                   placeholder="Username"
                   register={{ ...register("username") }}
-                  className=""
                 />
               </div>
               <div className="flex">
@@ -97,7 +96,6 @@ const Login = () => {
                   type="password"
                   placeholder="Password"
                   register={{ ...register("password") }}
-                  className=""
                 />
               </div>
               <button className="w-full p-2  text-white bg-green-600 rounded-lg hover:border-transparent font-semibold">
